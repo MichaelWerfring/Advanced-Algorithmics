@@ -9,3 +9,4 @@ C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Lib\obj\Debug\net9.0\Lib.d
 C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Lib\obj\Debug\net9.0\refint\Lib.dll
 C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Lib\obj\Debug\net9.0\Lib.pdb
 C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Lib\obj\Debug\net9.0\ref\Lib.dll
+C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Lib\obj\Debug\net9.0\Lib.sourcelink.json

@@ -101,3 +101,4 @@ C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Test\obj\Debug\net9.0\refi
 C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Test\obj\Debug\net9.0\Test.pdb
 C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Test\obj\Debug\net9.0\Test.genruntimeconfig.cache
 C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Test\obj\Debug\net9.0\ref\Test.dll
+C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Test\obj\Debug\net9.0\Test.sourcelink.json

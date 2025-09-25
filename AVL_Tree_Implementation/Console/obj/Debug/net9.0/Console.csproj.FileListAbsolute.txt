@@ -16,3 +16,4 @@ C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Console\obj\Debug\net9.0\r
 C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Console\obj\Debug\net9.0\Console.pdb
 C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Console\obj\Debug\net9.0\Console.genruntimeconfig.cache
 C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Console\obj\Debug\net9.0\ref\Console.dll
+C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Console\obj\Debug\net9.0\Console.sourcelink.json
