@@ -1,40 +1,88 @@
-﻿namespace Lib;
+﻿using System.Diagnostics;
 
-public class Tree<T>(T data)
+namespace Lib;
+
+public class Tree<T> 
+    where T : IComparable<T>
 {
-    public Tree<T>? Left { get; set; } = null;
-    
-    public Tree<T>? Right { get; set; } = null;
+    public Tree(){ }
 
-    public T Data { get; set; } = data;
-
-    public int GetHeight()
+    /*
+     This ctor is handy for: 
+        1) testing and
+        2) to create trees from existing trees
+    */ 
+    public Tree(Node<T> root)
     {
-        if (Left == null && Right != null)
-            return Right.GetHeight() + 1;
+        ArgumentNullException.ThrowIfNull(root);
+        Root = root;
+    }
+        
+    // ?. Acces if not null else return null
+    // ?? return if not null else return value at right
+    public int Height => Root?.Height ?? 0;
 
-        if (Right == null && Left != null)
-            return Left.GetHeight() + 1;
-        
-        // no children -> last element
-        if(Left == null && Right == null)
-            return 0;
-        
-        return Math.Max(Left.GetHeight(), Right.GetHeight()) + 1;
+    public Node<T>? Root { get; private set; }
+
+    public void Insert(T item)
+    {
+        Root = Insert(Root, item);
+    }
+    
+    private Node<T> Insert(Node<T>? node, T item)
+    {
+        if (node == null)
+            return new Node<T>(item);
+
+        switch (item.CompareTo(node.Data))
+        {
+            case 0:
+                return node;
+            case < 0:
+                node.Left = Insert(node.Left, item);
+                break;
+            default:
+                node.Right = Insert(node.Right, item);
+                break;
+        }
+
+        return node;
     }
 
-    public int GetBalanceFactor()
+    public static Node<T> RotateRight(Node<T> node)
     {
-        int heightLeft = 0;
-        int heightRight = 0;
+        ArgumentNullException.ThrowIfNull(node);
         
-        if (Left != null)
-            heightLeft  = Left.GetHeight() + 1;
+        if (node.Left == null)
+            throw new InvalidOperationException("The node cannot be rotated since it has no left child!");
+                
+        var newRoot = node.Left;
         
-        if (Right != null)
-            heightRight  = Right.GetHeight() + 1;
+        newRoot.Right = node;
+        node.Left = null;
 
+        // Node gets moved down by 2 levels
+        // newRoot.Right.Height -= 2;
+        
+        return newRoot;
+    }
 
-        return heightLeft - heightRight;
+    public static Node<T> RotateLeft(Node<T> node)
+    {
+        ArgumentNullException.ThrowIfNull(node);
+
+        if (node.Right == null)
+            throw new InvalidOperationException("The node cannot be rotated since it has no right child!");
+        
+        var newRoot = node.Right;
+
+        newRoot.Left = node;
+        node.Right = null;
+        
+        // Re-calculate heights
+        // newRoot.Left.Height = 1 + Math.Max(newRoot.Left.Height, newRoot.Right?.Height ?? 0); 
+        // newRoot.Right.Height = 1 + Math.Max(newRoot.Left.Height, newRoot.Right?.Height ?? 0);
+
+        return newRoot;
     }
 }

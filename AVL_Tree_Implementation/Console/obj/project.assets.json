@@ -1,30 +1,11 @@
 {
   "version": 3,
   "targets": {
-    "net9.0": {
-      "Lib/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v9.0",
-        "compile": {
-          "bin/placeholder/Lib.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Lib.dll": {}
-        }
-      }
-    }
+    "net9.0": {}
   },
-  "libraries": {
-    "Lib/1.0.0": {
-      "type": "project",
-      "path": "../Lib/Lib.csproj",
-      "msbuildProject": "../Lib/Lib.csproj"
-    }
-  },
+  "libraries": {},
   "projectFileDependencyGroups": {
-    "net9.0": [
-      "Lib >= 1.0.0"
-    ]
+    "net9.0": []
   },
   "packageFolders": {
     "C:\\Users\\micha\\.nuget\\packages\\": {},
@@ -57,11 +38,7 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {
-            "C:\\fh-mit\\s1\\algo\\assignments\\AVL_Tree_Implementation\\Lib\\Lib.csproj": {
-              "projectPath": "C:\\fh-mit\\s1\\algo\\assignments\\AVL_Tree_Implementation\\Lib\\Lib.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
