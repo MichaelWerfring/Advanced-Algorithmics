@@ -54,21 +54,25 @@ public class Tree<T>
         int balanceFactor = node.CalculateBalanceFactor();
         
         // Determine Rotation Direction:
-        if (balanceFactor > 1 && key.CompareTo(node.Left.Data) > 0)
+        if (balanceFactor > 1 && key.CompareTo(node.Left.Data) < 0)
         {
-            return node.RotateLeft();
-        }
-        else if (balanceFactor > 1 && key.CompareTo(node.Left.Data) < 0)
-        {
-            node.Left = node.Left.RotateLeft(); 
+            // LL
             return node.RotateRight();
         }
         else if (balanceFactor < -1 && key.CompareTo(node.Right.Data) > 0)
         {
+            // RR
+            return node.RotateLeft();
+        }
+        else if (balanceFactor > 1 && key.CompareTo(node.Left.Data) > 0)
+        {
+            // LR
+            node.Left = node.Left.RotateLeft(); 
             return node.RotateRight();
         }
         else if (balanceFactor < -1 && key.CompareTo(node.Right.Data) < 0)
         {
+            // RL
             node.Right = node.Right.RotateRight(); 
             return node.RotateLeft();
         }

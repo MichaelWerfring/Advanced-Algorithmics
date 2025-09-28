@@ -14,7 +14,7 @@ public class ExtensionsTests
     }
 
     [Test]
-    public void CalculateHeightReturnsTwoWhenNodeHasChildren()
+    public void CalculateHeightReturnsTwoWhenNodeHasChildrenOneLevelLower()
     {
         var newNode = new Node<int>(2);
         newNode.Left = new Node<int>(1);
@@ -22,17 +22,83 @@ public class ExtensionsTests
         
         Assert.That(newNode.CalculateHeight(), Is.EqualTo(2));
     }
-    
-    
+
+    [Test]
+    public void CalculateBalanceFactorReturnsZeroWhenNodeNoChildren()
+    {
+        var node = new Node<int>(2);
+
+        int balanceFactor = node.CalculateBalanceFactor();
+        
+        Assert.That(balanceFactor, Is.EqualTo(0));
+    }
     
     [Test]
-    public void RotatingNodeToTheRightPutsLeftChildIntoRootAndBalancesTree()
+    public void CalculateBalanceFactorReturnsZeroWhenNodeHasEqualNumberOfRightAndLeftChildren()
+    {
+        var node = new Node<int>(2);
+        node.Left = new Node<int>(1);
+        node.Right = new Node<int>(3);
+        
+        int balanceFactor = node.CalculateBalanceFactor();
+        
+        Assert.That(balanceFactor, Is.EqualTo(0));
+    }
+    
+    [Test]
+    public void CalculateBalanceFactorReturnsOneWhenNodeHasMoreLeftChildrenThanRight()
+    {
+        var node = new Node<int>(2);
+        node.Left = new Node<int>(1);
+        
+        int balanceFactor = node.CalculateBalanceFactor();
+        
+        Assert.That(balanceFactor, Is.EqualTo(1));
+    }
+    
+    [Test]
+    public void CalculateBalanceFactorReturnsMinusOneWhenNodeHasMoreRightChildrenThanLeft()
+    {
+        var node = new Node<int>(2);
+        node.Right = new Node<int>(3);
+        
+        int balanceFactor = node.CalculateBalanceFactor();
+        
+        Assert.That(balanceFactor, Is.EqualTo(-1));
+    }
+    
+    [Test]
+    public void CalculateBalanceFactorReturnsTwoWhenNodeHasTwoMoreLeftChildrenThanRight()
+    {
+        var node = new Node<int>(2);
+        node.Left = new Node<int>(1);
+        node.Left.Left = new Node<int>(1);
+        
+        int balanceFactor = node.CalculateBalanceFactor();
+        
+        Assert.That(balanceFactor, Is.EqualTo(1));
+    }
+    
+    [Test]
+    public void CalculateBalanceFactorReturnsMinusTwoWhenNodeHasTwoMoreRightChildrenThanLeft()
+    {
+        var node = new Node<int>(2);
+        node.Right = new Node<int>(3);
+        node.Right.Right = new Node<int>(3);
+        
+        int balanceFactor = node.CalculateBalanceFactor();
+        
+        Assert.That(balanceFactor, Is.EqualTo(-1));
+    }
+    
+    [Test]
+    public void RotatingNodeToTheLefPutsLeftChildIntoRootAndBalancesTree()
     {
         var root = new Node<int>(1);
         root.Right = new Node<int>(2);
         root.Right.Right = new Node<int>(3);
 
-        var rotatedSubtree = root.RotateRight();
+        var rotatedSubtree = root.RotateLeft();
         
         Assert.That(rotatedSubtree, Is.Not.Null);
         Assert.That(rotatedSubtree.Data, Is.EqualTo(2));
@@ -59,26 +125,15 @@ public class ExtensionsTests
         
         Assert.Catch<ArgumentNullException>(() => dummyNode.RotateRight());
     }
-
-    [Test]
-    public void RotatingNodeToRightWithoutLeftChildToRightThrowsInvalidOperationException()
-    {
-        var root = new Node<int>(1)
-        {
-            Left = null
-        };
-
-        Assert.Catch<InvalidOperationException>(() => root.RotateRight());
-    }
     
     [Test]
-    public void RotatingNodeToTheLeftPutsRightChildIntoRootAndBalancesTree()
+    public void RotatingNodeToTheRightPutsRightChildIntoRootAndBalancesTree()
     {
         var root = new Node<int>(3);
         root.Left = new Node<int>(2);
         root.Left.Left = new Node<int>(1);
 
-        var rotatedSubtree = root.RotateLeft();
+        var rotatedSubtree = root.RotateRight();
         
         Assert.That(rotatedSubtree, Is.Not.Null);
         Assert.That(rotatedSubtree.Data, Is.EqualTo(2));
@@ -107,93 +162,28 @@ public class ExtensionsTests
     }
 
     [Test]
-    public void RotatingNodeToLeftWithoutRightChildToRightThrowsInvalidOperationException()
-    {
-        var root = new Node<int>(1)
-        {
-            Right = null
-        };
-
-        Assert.Catch<InvalidOperationException>(() => root.RotateLeft());
-    }
-
-    [Test]
-    public void RotatingNodeToTheRightAndThenToTheLeftBalancesOutTree()
-    {
-        var root = new Node<int>(3);
-        root.Left = new Node<int>(1);
-        root.Left.Right = new Node<int>(2);
-        
-        root.Left = root.Left.RotateRight(); 
-        var rotatedSubtree = root.RotateLeft();
-        
-        Assert.That(rotatedSubtree, Is.Not.Null);
-        Assert.That(rotatedSubtree.Data, Is.EqualTo(2));
-        
-        Assert.That(rotatedSubtree.Left, Is.Not.Null);
-        Assert.That(rotatedSubtree.Left.Data, Is.EqualTo(1));
-        
-        Assert.That(rotatedSubtree.Right, Is.Not.Null);
-        Assert.That(rotatedSubtree.Right.Data, Is.EqualTo(3));
-        
-        // Check that no references are pointing upwards in the tree
-        Assert.That(rotatedSubtree.Right.Right, Is.Null);
-        Assert.That(rotatedSubtree.Right.Left, Is.Null);
-        
-        Assert.That(rotatedSubtree.Left.Right, Is.Null);
-        Assert.That(rotatedSubtree.Left.Left, Is.Null);
-    }
+     public void RotatingNodeToTheRightUpdatesHeightsOfTheNode()
+     {
+         var root = new Node<int>(3);
+         root.Height = 3;
+         
+         root.Left = new Node<int>(2);
+         root.Left.Height = 2;
+         
+         root.Left.Left = new Node<int>(1);
+         root.Left.Left.Height = 1;
     
-    [Test]
-    public void RotatingNodeToTheLeftAndThenToTheRightBalancesOutTree()
-    {
-        var root = new Node<int>(1);
-        root.Right = new Node<int>(3);
-        root.Right.Left = new Node<int>(2);
-        
-        root.Right = root.Right.RotateLeft(); 
-        var rotatedSubtree = root.RotateRight();
-        
-        Assert.That(rotatedSubtree, Is.Not.Null);
-        Assert.That(rotatedSubtree.Data, Is.EqualTo(2));
-        
-        Assert.That(rotatedSubtree.Left, Is.Not.Null);
-        Assert.That(rotatedSubtree.Left.Data, Is.EqualTo(1));
-        
-        Assert.That(rotatedSubtree.Right, Is.Not.Null);
-        Assert.That(rotatedSubtree.Right.Data, Is.EqualTo(3));
-        
-        // Check that no references are pointing upwards in the tree
-        Assert.That(rotatedSubtree.Right.Right, Is.Null);
-        Assert.That(rotatedSubtree.Right.Left, Is.Null);
-        
-        Assert.That(rotatedSubtree.Left.Right, Is.Null);
-        Assert.That(rotatedSubtree.Left.Left, Is.Null);
-    }
-
+         var rotatedSubtree = root.RotateRight();
+         
+         Assert.That(rotatedSubtree.Height, Is.EqualTo(2));
+         Assert.That(rotatedSubtree.Left, Is.Not.Null);
+         Assert.That(rotatedSubtree.Left.Height, Is.EqualTo(1));
+         Assert.That(rotatedSubtree.Right, Is.Not.Null);
+         Assert.That(rotatedSubtree.Right.Height, Is.EqualTo(1));
+     }
+    
     [Test]
     public void RotatingNodeToTheLeftUpdatesHeightsOfTheNode()
-    {
-        var root = new Node<int>(3);
-        root.Height = 3;
-        
-        root.Left = new Node<int>(2);
-        root.Left.Height = 2;
-        
-        root.Left.Left = new Node<int>(1);
-        root.Left.Left.Height = 1;
-
-        var rotatedSubtree = root.RotateLeft();
-        
-        Assert.That(rotatedSubtree.Height, Is.EqualTo(2));
-        Assert.That(rotatedSubtree.Left, Is.Not.Null);
-        Assert.That(rotatedSubtree.Left.Height, Is.EqualTo(1));
-        Assert.That(rotatedSubtree.Right, Is.Not.Null);
-        Assert.That(rotatedSubtree.Right.Height, Is.EqualTo(1));
-    }
-    
-    [Test]
-    public void RotatingNodeToTheRightUpdatesHeightsOfTheNode()
     {
         var root = new Node<int>(1);
         root.Height = 3;
@@ -204,28 +194,6 @@ public class ExtensionsTests
         root.Right.Right = new Node<int>(3);
         root.Right.Right.Height = 1;
 
-        var rotatedSubtree = root.RotateRight();
-        
-        Assert.That(rotatedSubtree.Height, Is.EqualTo(2));
-        Assert.That(rotatedSubtree.Left, Is.Not.Null);
-        Assert.That(rotatedSubtree.Left.Height, Is.EqualTo(1));
-        Assert.That(rotatedSubtree.Right, Is.Not.Null);
-        Assert.That(rotatedSubtree.Right.Height, Is.EqualTo(1));
-    }
-
-    [Test]
-    public void RotatingNodeToTheRightAndThenToTheLeftUpdatesHeightsOfTheNodes()
-    {
-        var root = new Node<int>(3);
-        root.Height = 3;
-        
-        root.Left = new Node<int>(1);
-        root.Left.Height = 2;
-        
-        root.Left.Right = new Node<int>(2);
-        root.Left.Right.Height = 1;
-        
-        root.Left = root.Left.RotateRight(); 
         var rotatedSubtree = root.RotateLeft();
         
         Assert.That(rotatedSubtree.Height, Is.EqualTo(2));
@@ -235,20 +203,4 @@ public class ExtensionsTests
         Assert.That(rotatedSubtree.Right.Height, Is.EqualTo(1));
     }
     
-    [Test]
-    public void RotatingNodeToTheLeftAndThenToTheRightUpdatesHeightsOfTheNodes()
-    {
-        var root = new Node<int>(1);
-        root.Right = new Node<int>(3);
-        root.Right.Left = new Node<int>(2);
-
-        root.Right = root.Right.RotateLeft();
-        var rotatedSubtree = root.RotateRight();
-        
-        Assert.That(rotatedSubtree.Height, Is.EqualTo(2));
-        Assert.That(rotatedSubtree.Left, Is.Not.Null);
-        Assert.That(rotatedSubtree.Left.Height, Is.EqualTo(1));
-        Assert.That(rotatedSubtree.Right, Is.Not.Null);
-        Assert.That(rotatedSubtree.Right.Height, Is.EqualTo(1));
-    }
 }

@@ -36,21 +36,18 @@ public static class Extensions
         where T : IComparable<T>
     {
         ArgumentNullException.ThrowIfNull(node);
-        
-        if (node.Left == null)
-            throw new InvalidOperationException("The node cannot be rotated since it has no left child!");
-                
-        var newRoot = node.Left;
-        newRoot.Right = node;
-        
-        // Remove upwards pointing reference
-        node.Left = null;
+                        
+        var root = node.Right;
+        var temp = root.Left;
 
-        // Update heights
-        newRoot.Right.Height = newRoot.Right.CalculateHeight();
-        newRoot.Height = newRoot.CalculateHeight();
+        root.Left = node;
+        node.Right = temp;
         
-        return newRoot;
+        // Update heights
+        node.Height = node.CalculateHeight();
+        root.Height = root.CalculateHeight();
+        
+        return root;
     }
     
     public static Node<T> RotateRight<T>(this Node<T> node)
@@ -58,19 +55,16 @@ public static class Extensions
     {
         ArgumentNullException.ThrowIfNull(node);
 
-        if (node.Right == null)
-            throw new InvalidOperationException("The node cannot be rotated since it has no right child!");
-        
-        var newRoot = node.Right;
-        newRoot.Left = node;
-        
-        // Remove upwards pointing reference
-        node.Right = null;
+        var root = node.Left;
+        var temp = root.Right;
+
+        root.Right = node;
+        node.Left = temp;
         
         // Update heights
-        newRoot.Left.Height = newRoot.Left.CalculateHeight();
-        newRoot.Height = newRoot.CalculateHeight();
+        node.Height = node.CalculateHeight();
+        root.Height = root.CalculateHeight();
         
-        return newRoot;
+        return root;
     }
 }
