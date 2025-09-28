@@ -10,7 +10,7 @@ public class Tree<T>
     /*
      This ctor is handy for: 
         1) testing and
-        2) to create trees from existing trees
+        2) creating trees from existing trees
     */ 
     public Tree(Node<T> root)
     {
@@ -18,9 +18,9 @@ public class Tree<T>
         Root = root;
     }
         
-    // ?. Acces if not null else return null
+    // ?. Access if not null else return null
     // ?? return if not null else return value at right
-    public int Height => Root?.Height ?? 0;
+    public int Height => Root?.CalculateHeight() ?? 0;
 
     public Node<T>? Root { get; private set; }
 
@@ -29,60 +29,50 @@ public class Tree<T>
         Root = Insert(Root, item);
     }
     
-    private Node<T> Insert(Node<T>? node, T item)
+    private Node<T> Insert(Node<T>? node, T key)
     {
         if (node == null)
-            return new Node<T>(item);
+            return new Node<T>(key);
 
-        switch (item.CompareTo(node.Data))
+        switch (key.CompareTo(node.Data))
         {
             case 0:
+                // return as is so items cannot be inserted twice
                 return node;
             case < 0:
-                node.Left = Insert(node.Left, item);
+                node.Left = Insert(node.Left, key);
                 break;
             default:
-                node.Right = Insert(node.Right, item);
+                node.Right = Insert(node.Right, key);
                 break;
         }
-
+        
+        // update height of current node
+        node.Height = node.CalculateHeight();
+        
+        // get balance factor for current node
+        int balanceFactor = node.CalculateBalanceFactor();
+        
+        // Determine Rotation Direction:
+        if (balanceFactor > 1 && key.CompareTo(node.Left.Data) > 0)
+        {
+            return node.RotateLeft();
+        }
+        else if (balanceFactor > 1 && key.CompareTo(node.Left.Data) < 0)
+        {
+            node.Left = node.Left.RotateLeft(); 
+            return node.RotateRight();
+        }
+        else if (balanceFactor < -1 && key.CompareTo(node.Right.Data) > 0)
+        {
+            return node.RotateRight();
+        }
+        else if (balanceFactor < -1 && key.CompareTo(node.Right.Data) < 0)
+        {
+            node.Right = node.Right.RotateRight(); 
+            return node.RotateLeft();
+        }
+        
         return node;
-    }
-
-    public static Node<T> RotateRight(Node<T> node)
-    {
-        ArgumentNullException.ThrowIfNull(node);
-        
-        if (node.Left == null)
-            throw new InvalidOperationException("The node cannot be rotated since it has no left child!");
-                
-        var newRoot = node.Left;
-        
-        newRoot.Right = node;
-        node.Left = null;
-
-        // Node gets moved down by 2 levels
-        // newRoot.Right.Height -= 2;
-        
-        return newRoot;
-    }
-
-    public static Node<T> RotateLeft(Node<T> node)
-    {
-        ArgumentNullException.ThrowIfNull(node);
-
-        if (node.Right == null)
-            throw new InvalidOperationException("The node cannot be rotated since it has no right child!");
-        
-        var newRoot = node.Right;
-
-        newRoot.Left = node;
-        node.Right = null;
-        
-        // Re-calculate heights
-        // newRoot.Left.Height = 1 + Math.Max(newRoot.Left.Height, newRoot.Right?.Height ?? 0); 
-        // newRoot.Right.Height = 1 + Math.Max(newRoot.Left.Height, newRoot.Right?.Height ?? 0);
-
-        return newRoot;
     }
 }

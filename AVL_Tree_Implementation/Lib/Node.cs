@@ -1,5 +1,6 @@
 ﻿namespace Lib;
 
+// TODO: Rename Data to Key
 public class Node<T> (T data)
     where T : IComparable<T>
 {
