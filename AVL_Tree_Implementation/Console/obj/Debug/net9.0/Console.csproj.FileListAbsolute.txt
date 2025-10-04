@@ -13,3 +13,7 @@ C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Console\obj\Debug\net9.0\C
 C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Console\obj\Debug\net9.0\Console.genruntimeconfig.cache
 C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Console\obj\Debug\net9.0\ref\Console.dll
 C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Console\obj\Debug\net9.0\Console.sourcelink.json
+C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Console\bin\Debug\net9.0\Lib.dll
+C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Console\bin\Debug\net9.0\Lib.pdb
+C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Console\obj\Debug\net9.0\Console.csproj.AssemblyReference.cache
+C:\fh-mit\s1\algo\assignments\AVL_Tree_Implementation\Console\obj\Debug\net9.0\Console.csproj.Up2Date
