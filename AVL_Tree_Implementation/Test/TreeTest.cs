@@ -499,4 +499,56 @@ public class TreeTests
         Assert.That(root.Right.Data, Is.EqualTo(8));
         Assert.That(root.Right.Height, Is.EqualTo(1));
     }
+
+    [Test]
+    public void SearchReturnsFalseWhenTreeIsEmpty()
+    {
+        var tree = new Tree<int>();
+
+        bool isInTree = tree.Search(0);
+        
+        Assert.That(isInTree, Is.False);
+    }
+
+    [TestCase(1)]
+    [TestCase(2)]
+    [TestCase(3)]
+    [TestCase(4)]
+    [TestCase(5)]
+    [TestCase(6)]
+    [TestCase(7)]
+    public void SearchReturnsTrueWhenItemIsInTree(int needle)
+    {
+        var tree = new Tree<int>();
+        tree.Insert(1);
+        tree.Insert(2);
+        tree.Insert(3);
+        tree.Insert(4);
+        tree.Insert(5);
+        tree.Insert(6);
+        tree.Insert(7);
+        
+        bool isInTree = tree.Search(needle);
+        
+        Assert.That(isInTree, Is.True);
+    }
+    
+    [TestCase(0)]
+    [TestCase(12)]
+    [TestCase(23)]
+    public void SearchReturnsFalseWhenItemIsNotInTree(int needle)
+    {
+        var tree = new Tree<int>();
+        tree.Insert(1);
+        tree.Insert(2);
+        tree.Insert(3);
+        tree.Insert(4);
+        tree.Insert(5);
+        tree.Insert(6);
+        tree.Insert(7);
+        
+        bool isInTree = tree.Search(needle);
+        
+        Assert.That(isInTree, Is.False);
+    }
 }

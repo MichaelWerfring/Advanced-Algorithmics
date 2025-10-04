@@ -25,6 +25,14 @@ public class Tree<T>
     public int Height => Root?.CalculateHeight() ?? 0;
 
     public Node<T>? Root { get; private set; }
+    
+    public bool Search(T item)
+    {
+        if (Root == null)
+            return false;
+
+        return Search(Root, item);
+    }
 
     public void Insert(T item)
     {
@@ -36,23 +44,46 @@ public class Tree<T>
         if (Root != null) 
             Root = Delete(Root, item);
     }
+
+    private bool Search(Node<T> node, T item)
+    {
+        if (item.CompareTo(node.Data) == 0)
+        {
+            return true;
+        }
+        
+        if (item.CompareTo(node.Data) < 0)
+        {
+            if (node.Left == null)
+                return false;
+            
+            return Search(node.Left, item);
+        }
+        else
+        {
+            if (node.Right == null)
+                return false;
+
+            return Search(node.Right, item);
+        }
+    }
     
-    private Node<T> Insert(Node<T>? node, T key)
+    private Node<T> Insert(Node<T>? node, T item)
     {
         if (node == null)
-            return new Node<T>(key);
+            return new Node<T>(item);
 
         //TODO: Implement > and == etc. in Node class
-        switch (key.CompareTo(node.Data))
+        switch (item.CompareTo(node.Data))
         {
             case 0:
                 // return as is so items cannot be inserted twice
                 return node;
             case < 0:
-                node.Left = Insert(node.Left, key);
+                node.Left = Insert(node.Left, item);
                 break;
             default:
-                node.Right = Insert(node.Right, key);
+                node.Right = Insert(node.Right, item);
                 break;
         }
         
@@ -62,23 +93,23 @@ public class Tree<T>
         return BalanceTree(node);
     }
 
-    private Node<T>? Delete(Node<T> node, T key)
+    private Node<T>? Delete(Node<T> node, T item)
     {
-        if (key.CompareTo(node.Data) < 0)// Key is smaller than current
+        if (item.CompareTo(node.Data) < 0)// Key is smaller than current
         {
             // Item is not found, do not change the tree
             if (node.Left == null)
                 return node;
             
-            node.Left = Delete(node.Left, key);
+            node.Left = Delete(node.Left, item);
         } 
-        else if (key.CompareTo(node.Data) > 0) // Key is larger than current
+        else if (item.CompareTo(node.Data) > 0) // Key is larger than current
         {
             // Item is not found, do not change the tree
             if (node.Right == null)
                 return node;
             
-            node.Right = Delete(node.Right, key);
+            node.Right = Delete(node.Right, item);
         }
         else
         {
