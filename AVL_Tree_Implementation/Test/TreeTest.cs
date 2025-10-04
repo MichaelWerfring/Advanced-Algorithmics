@@ -394,7 +394,7 @@ public class TreeTests
     }
 
     [Test]
-    public void DeletingItemWithTwoChildrenReplacesItWithMaxLeftChild()
+    public void DeletingItemWithTwoChildrenReplacesItWithMaxLeftChildAndUpdatesHeights()
     {
         var tree = new Tree<int>();
         tree.Insert(0);
@@ -408,25 +408,33 @@ public class TreeTests
         tree.Insert(1);
         
         tree.Delete(2);
-        
-        Assert.That(tree.Root, Is.Not.Null);
-        Assert.That(tree.Root.Data, Is.EqualTo(4));
-        Assert.That(tree.Root.Left, Is.Not.Null);
-        Assert.That(tree.Root.Left.Data, Is.EqualTo(1));
-        Assert.That(tree.Root.Right, Is.Not.Null);
-        Assert.That(tree.Root.Right.Data, Is.EqualTo(5));
-        Assert.That(tree.Root.Left.Left, Is.Not.Null);
-        Assert.That(tree.Root.Left.Left.Data, Is.EqualTo(0));
-        Assert.That(tree.Root.Left.Right, Is.Not.Null);
-        Assert.That(tree.Root.Left.Right.Data, Is.EqualTo(3));
-        Assert.That(tree.Root.Right.Right, Is.Not.Null);
-        Assert.That(tree.Root.Right.Right.Data, Is.EqualTo(6));
+
+        var root = tree.Root;
+        Assert.That(root, Is.Not.Null);
+        Assert.That(root.Data, Is.EqualTo(4));
+        Assert.That(root.Height, Is.EqualTo(3));
+        Assert.That(root.Left, Is.Not.Null);
+        Assert.That(root.Left.Data, Is.EqualTo(1));
+        Assert.That(root.Left.Height, Is.EqualTo(2));
+        Assert.That(root.Right, Is.Not.Null);
+        Assert.That(root.Right.Data, Is.EqualTo(5));
+        Assert.That(root.Right.Height, Is.EqualTo(2));
+        Assert.That(root.Left.Left, Is.Not.Null);
+        Assert.That(root.Left.Left.Data, Is.EqualTo(0));
+        Assert.That(root.Left.Left.Height, Is.EqualTo(1));
+        Assert.That(root.Left.Right, Is.Not.Null);
+        Assert.That(root.Left.Right.Data, Is.EqualTo(3));
+        Assert.That(root.Left.Right.Height, Is.EqualTo(1));
+        Assert.That(root.Right.Right, Is.Not.Null);
+        Assert.That(root.Right.Right.Data, Is.EqualTo(6));
+        Assert.That(root.Right.Right.Height, Is.EqualTo(1));
     }
     
     [Test]
-    public void DeletingNodesUntilTreeIsUnbalancedTriggersRebalanceToTheLeft()
+    public void DeletingNodesUntilTreeIsUnbalancedTriggersRebalanceToTheLeftAndUpdatesHeights()
     {
-        var tree = new Tree<int>(new Node<int>(5));
+        var tree = new Tree<int>();
+        tree.Insert(5);
         tree.Insert(3);
         tree.Insert(7);
         tree.Insert(2);
@@ -438,18 +446,30 @@ public class TreeTests
         tree.Delete(8);
         tree.Delete(7);
         tree.Delete(6);
+
+        var root = tree.Root;
+        Assert.That(root, Is.Not.Null);
+        Assert.That(root.Data, Is.EqualTo(3));
+        Assert.That(root.Height, Is.EqualTo(3));
         
-        Assert.That(tree.Root, Is.Not.Null);
-        Assert.That(tree.Root.Data, Is.EqualTo(3));
-        Assert.That(tree.Root.Left.Data, Is.EqualTo(2));
-        Assert.That(tree.Root.Right.Data, Is.EqualTo(5));
-        Assert.That(tree.Root.Right.Left.Data, Is.EqualTo(4));
+        Assert.That(root.Left, Is.Not.Null);
+        Assert.That(root.Left.Data, Is.EqualTo(2));
+        Assert.That(root.Left.Height, Is.EqualTo(1));
+        
+        Assert.That(root.Right, Is.Not.Null);
+        Assert.That(root.Right.Data, Is.EqualTo(5));
+        Assert.That(root.Right.Height, Is.EqualTo(2));
+        
+        Assert.That(root.Right.Left, Is.Not.Null);
+        Assert.That(root.Right.Left.Data, Is.EqualTo(4));
+        Assert.That(root.Right.Left.Height, Is.EqualTo(1));
     }
     
     [Test]
-    public void DeletingNodesUntilTreeIsUnbalancedTriggersRebalanceToTheRight()
+    public void DeletingNodesUntilTreeIsUnbalancedTriggersRebalanceToTheRightAndUpdatesHeights()
     {
-        var tree = new Tree<int>(new Node<int>(5));
+        var tree = new Tree<int>();
+        tree.Insert(5);
         tree.Insert(3);
         tree.Insert(7);
         tree.Insert(2);
@@ -461,11 +481,22 @@ public class TreeTests
         tree.Delete(2);
         tree.Delete(4);
         tree.Delete(3);
+
+        var root = tree.Root;
+        Assert.That(root, Is.Not.Null);
+        Assert.That(root.Data, Is.EqualTo(7));
+        Assert.That(root.Height, Is.EqualTo(3));
         
-        Assert.That(tree.Root, Is.Not.Null);
-        Assert.That(tree.Root.Data, Is.EqualTo(7));
-        Assert.That(tree.Root.Left.Data, Is.EqualTo(5));
-        Assert.That(tree.Root.Left.Right.Data, Is.EqualTo(6));
-        Assert.That(tree.Root.Right.Data, Is.EqualTo(8));
+        Assert.That(root.Left, Is.Not.Null);
+        Assert.That(root.Left.Data, Is.EqualTo(5));
+        Assert.That(root.Left.Height, Is.EqualTo(2));
+        
+        Assert.That(root.Left.Right, Is.Not.Null);
+        Assert.That(root.Left.Right.Data, Is.EqualTo(6));
+        Assert.That(root.Left.Right.Height, Is.EqualTo(1));
+        
+        Assert.That(root.Right, Is.Not.Null);
+        Assert.That(root.Right.Data, Is.EqualTo(8));
+        Assert.That(root.Right.Height, Is.EqualTo(1));
     }
 }
