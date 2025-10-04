@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Xml.Serialization;
 
 namespace Lib;
 
@@ -29,11 +30,18 @@ public class Tree<T>
         Root = Insert(Root, item);
     }
     
+    public void Delete(T item)
+    {
+        if (Root != null) 
+            Root = Delete(Root, item);
+    }
+    
     private Node<T> Insert(Node<T>? node, T key)
     {
         if (node == null)
             return new Node<T>(key);
 
+        //TODO: Implement > and == etc. in Node class
         switch (key.CompareTo(node.Data))
         {
             case 0:
@@ -47,36 +55,94 @@ public class Tree<T>
                 break;
         }
         
-        // update height of current node
+        // Update height of current node
+        node.Height = node.CalculateHeight();
+
+        return BalanceTree(node, key);
+    }
+
+    private Node<T>? Delete(Node<T> node, T key)
+    {
+        if (key.CompareTo(node.Data) < 0)// Key is smaller than current
+        {
+            // Item is not found, do not change the tree
+            if (node.Left == null)
+                return node;
+            
+            node.Left = Delete(node.Left, key);
+        } 
+        else if (key.CompareTo(node.Data) > 0) // Key is larger than current
+        {
+            // Item is not found, do not change the tree
+            if (node.Right == null)
+                return node;
+            
+            node.Right = Delete(node.Right, key);
+        }
+        else
+        {
+            // No Children: Just delete
+            if (node.Left == null && node.Right == null)
+            {
+                return null;
+            }
+            
+            // One Child: Node takes place of parent
+            if (node.Left != null && node.Right == null)
+            {
+                // TODO: Do I have to null out node? 
+                return node.Left;
+            }
+            if (node.Left == null && node.Right != null)
+            {
+                return node.Right;
+            }
+            
+            // Two Children: replace either with max of left or min of right
+            if (node.Left != null && node.Right != null)
+            {
+                var newNode = node.Left.FindMax();
+                newNode.Left = node.Left;
+                newNode.Right = node.Right;
+                
+                node.Left = null;
+                node.Right = null;
+                
+                return newNode;
+            }
+        }
+
+        // Update Height
         node.Height = node.CalculateHeight();
         
-        // get balance factor for current node
+        // Check BF & rotate
+        return BalanceTree(node, key);
+    }
+
+    private Node<T> BalanceTree(Node<T> node, T key)
+    {
+        // Get balance factor for current node
         int balanceFactor = node.CalculateBalanceFactor();
-        
-        // Determine Rotation Direction:
-        if (balanceFactor > 1 && key.CompareTo(node.Left.Data) < 0)
+
+        switch (balanceFactor)
         {
-            // LL
-            return node.RotateRight();
+            // Determine Rotation Direction:
+            case > 1 when key.CompareTo(node.Left.Data) < 0:
+                // LL
+                return node.RotateRight();
+            case < -1 when key.CompareTo(node.Right.Data) > 0:
+                // RR
+                return node.RotateLeft();
+            case > 1 when key.CompareTo(node.Left.Data) > 0:
+                // LR
+                node.Left = node.Left.RotateLeft(); 
+                return node.RotateRight();
+            case < -1 when key.CompareTo(node.Right.Data) < 0:
+                // RL
+                node.Right = node.Right.RotateRight(); 
+                return node.RotateLeft();
+            default:
+                return node;
         }
-        else if (balanceFactor < -1 && key.CompareTo(node.Right.Data) > 0)
-        {
-            // RR
-            return node.RotateLeft();
-        }
-        else if (balanceFactor > 1 && key.CompareTo(node.Left.Data) > 0)
-        {
-            // LR
-            node.Left = node.Left.RotateLeft(); 
-            return node.RotateRight();
-        }
-        else if (balanceFactor < -1 && key.CompareTo(node.Right.Data) < 0)
-        {
-            // RL
-            node.Right = node.Right.RotateRight(); 
-            return node.RotateLeft();
-        }
-        
-        return node;
     }
 }

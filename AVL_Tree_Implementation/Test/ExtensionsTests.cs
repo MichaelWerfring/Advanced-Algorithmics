@@ -202,5 +202,18 @@ public class ExtensionsTests
         Assert.That(rotatedSubtree.Right, Is.Not.Null);
         Assert.That(rotatedSubtree.Right.Height, Is.EqualTo(1));
     }
+
+    [Test]
+    public void FindMaxReturnsMaximumChildOfNode()
+    {
+        var node = new Node<int>(0);
+        node.Right = new Node<int>(1);
+        node.Right.Right = new Node<int>(2);
+
+        var max = node.FindMax();
+        
+        Assert.That(max, Is.Not.Null);
+        Assert.That(max.Data, Is.EqualTo(2));
+    }   
     
 }

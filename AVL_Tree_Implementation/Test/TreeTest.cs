@@ -1,9 +1,12 @@
-﻿using Lib;
+﻿using System.Diagnostics;
+using Lib;
 
 namespace Test;
 
 public class TreeTests
 {
+    
+    //TODO: Refactor to work with strings and floats as well
     [Test]
     public void EmptyTreeHasHeightZero()
     {
@@ -253,5 +256,170 @@ public class TreeTests
         Assert.That(root.Left.Left.Height, Is.EqualTo(1));
         Assert.That(root.Right.Right.Height, Is.EqualTo(1));
         Assert.That(root.Right.Left.Height, Is.EqualTo(1));
+    }
+
+    [Test]
+    public void DeletingItemFromEmptyTreeDoesNotChangeTree()
+    {
+        var tree = new Tree<int>();
+        
+        tree.Delete(0);
+        
+        Assert.That(tree.Root, Is.Null);
+    }
+
+    [Test]
+    public void DeletingItemFromTreeWithSingleItemLeavesEmptyTree()
+    {
+        var tree = new Tree<int>(new Node<int>(0));
+        
+        tree.Delete(0);
+        
+        Assert.That(tree.Root, Is.Null);
+    }
+
+    [Test]
+    public void DeletingItemWhichIsNotInTreeDoesNotChangeTree()
+    {
+        var tree = new Tree<int>(new Node<int>(0));
+        
+        tree.Delete(1);
+        
+        Assert.That(tree.Root, Is.Not.Null);
+        Assert.That(tree.Root.Data, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void DeletingRootWithLeftChildReplacesRootWithChild()
+    {
+        var root = new Node<int>(1);
+        root.Left = new Node<int>(0);
+        var tree = new Tree<int>(root);
+        
+        tree.Delete(1);
+        
+        Assert.That(tree.Root, Is.Not.Null);
+        Assert.That(tree.Root.Data, Is.EqualTo(0));
+    }
+    
+    [Test]
+    public void DeletingRootWithRightChildReplacesRootWithChild()
+    {
+        var root = new Node<int>(1);
+        root.Right = new Node<int>(2);
+        var tree = new Tree<int>(root);
+        
+        tree.Delete(1);
+        
+        Assert.That(tree.Root, Is.Not.Null);
+        Assert.That(tree.Root.Data, Is.EqualTo(2));
+    }
+    
+    [Test]
+    public void DeletingRootWithTwoChildrenReplacesRootWithLeftMaxChild()
+    {
+        var root = new Node<int>(1);
+        root.Left = new Node<int>(0);
+        root.Right = new Node<int>(2);
+        
+        var tree = new Tree<int>(root);
+        
+        tree.Delete(1);
+        
+        Assert.That(tree.Root, Is.Not.Null);
+        Assert.That(tree.Root.Data, Is.EqualTo(0));
+    }
+    
+    [Test]
+    public void DeletingLeafItemDeletesTheItemButDoesNotChangeRestOfTheTree()
+    {
+        var root = new Node<int>(2);
+        root.Left = new Node<int>(1);
+        root.Right = new Node<int>(3);
+        root.Right.Right = new Node<int>(4);
+
+        var tree = new Tree<int>(root);
+        
+        tree.Delete(4);
+        
+        Assert.That(tree.Root, Is.Not.Null);
+        Assert.That(tree.Root.Data, Is.EqualTo(2));
+        Assert.That(tree.Root.Left, Is.Not.Null);
+        Assert.That(tree.Root.Left.Data, Is.EqualTo(1));
+        Assert.That(tree.Root.Right, Is.Not.Null);
+        Assert.That(tree.Root.Right.Data, Is.EqualTo(3));
+        Assert.That(tree.Root.Right.Right, Is.Null);
+    }
+
+    [Test]
+    public void DeletingItemWithLeftChildDeletesTheItemAndReplacesItWithChildWithoutChangingRestOfTheTree()
+    {
+        var root = new Node<int>(2);
+        root.Left = new Node<int>(1);
+        root.Right = new Node<int>(4);
+        root.Right.Left = new Node<int>(3);
+
+        var tree = new Tree<int>(root);
+        
+        tree.Delete(4);
+        
+        Assert.That(tree.Root, Is.Not.Null);
+        Assert.That(tree.Root.Data, Is.EqualTo(2));
+        Assert.That(tree.Root.Left, Is.Not.Null);
+        Assert.That(tree.Root.Left.Data, Is.EqualTo(1));
+        Assert.That(tree.Root.Right, Is.Not.Null);
+        Assert.That(tree.Root.Right.Data, Is.EqualTo(3));
+        Assert.That(tree.Root.Right.Right, Is.Null);
+    }
+    
+    [Test]
+    public void DeletingItemWithRightChildDeletesTheItemAndReplacesItWithChildWithoutChangingRestOfTheTree()
+    {
+        var root = new Node<int>(2);
+        root.Left = new Node<int>(1);
+        root.Right = new Node<int>(3);
+        root.Right.Right = new Node<int>(4);
+
+        var tree = new Tree<int>(root);
+        
+        tree.Delete(3);
+        
+        Assert.That(tree.Root, Is.Not.Null);
+        Assert.That(tree.Root.Data, Is.EqualTo(2));
+        Assert.That(tree.Root.Left, Is.Not.Null);
+        Assert.That(tree.Root.Left.Data, Is.EqualTo(1));
+        Assert.That(tree.Root.Right, Is.Not.Null);
+        Assert.That(tree.Root.Right.Data, Is.EqualTo(4));
+        Assert.That(tree.Root.Right.Right, Is.Null);
+    }
+
+    [Test]
+    public void DeletingItemWithTwoChildrenReplacesItWithMaxLeftChild()
+    {
+        var tree = new Tree<int>();
+        tree.Insert(0);
+        tree.Insert(2);
+        tree.Insert(3);
+        tree.Insert(4);
+        tree.Insert(5);
+        tree.Insert(6);
+        
+        // element that will be the max left from 2
+        tree.Insert(1);
+        
+        tree.Delete(2);
+        
+        Assert.That(tree.Root, Is.Not.Null);
+        Assert.That(tree.Root.Data, Is.EqualTo(4));
+        Assert.That(tree.Root.Left, Is.Not.Null);
+        Assert.That(tree.Root.Left.Data, Is.EqualTo(1));
+        Assert.That(tree.Root.Right, Is.Not.Null);
+        Assert.That(tree.Root.Right.Data, Is.EqualTo(5));
+        Assert.That(tree.Root.Left.Left, Is.Not.Null);
+        Assert.That(tree.Root.Left.Left.Data, Is.EqualTo(0));
+        Assert.That(tree.Root.Left.Right, Is.Not.Null);
+        Assert.That(tree.Root.Left.Right.Data, Is.EqualTo(3));
+        Assert.That(tree.Root.Right.Right, Is.Not.Null);
+        Assert.That(tree.Root.Right.Right.Data, Is.EqualTo(6));
     }
 }

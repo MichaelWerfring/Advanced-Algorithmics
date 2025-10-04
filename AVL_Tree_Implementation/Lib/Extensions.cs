@@ -67,4 +67,15 @@ public static class Extensions
         
         return root;
     }
+
+    public static Node<T> FindMax<T>(this Node<T> node)
+        where T : IComparable<T>
+    {
+        if (node.Right == null)
+        {
+            return node;
+        }
+
+        return node.Right.FindMax();
+    }
 }
