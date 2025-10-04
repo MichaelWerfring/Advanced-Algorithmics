@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml.Serialization;
 
 namespace Lib;
@@ -58,7 +59,7 @@ public class Tree<T>
         // Update height of current node
         node.Height = node.CalculateHeight();
 
-        return BalanceTree(node, key);
+        return BalanceTree(node);
     }
 
     private Node<T>? Delete(Node<T> node, T key)
@@ -101,14 +102,9 @@ public class Tree<T>
             // Two Children: replace either with max of left or min of right
             if (node.Left != null && node.Right != null)
             {
-                var newNode = node.Left.FindMax();
-                newNode.Left = node.Left;
-                newNode.Right = node.Right;
-                
-                node.Left = null;
-                node.Right = null;
-                
-                return newNode;
+                var leftMax = node.Left.FindMax();
+                node.Data = leftMax.Data; 
+                node.Left = Delete(node.Left, leftMax.Data); // Remove duplicates
             }
         }
 
@@ -116,33 +112,36 @@ public class Tree<T>
         node.Height = node.CalculateHeight();
         
         // Check BF & rotate
-        return BalanceTree(node, key);
+        return BalanceTree(node);
     }
 
-    private Node<T> BalanceTree(Node<T> node, T key)
+    private Node<T> BalanceTree(Node<T> node)
     {
-        // Get balance factor for current node
-        int balanceFactor = node.CalculateBalanceFactor();
-
-        switch (balanceFactor)
+        if (node.CalculateBalanceFactor() > 1) // Left Subtree to tall
         {
-            // Determine Rotation Direction:
-            case > 1 when key.CompareTo(node.Left.Data) < 0:
-                // LL
+            if (node.Left.CalculateBalanceFactor() >= 0) // check if grandchild is at left
+            {
+                //Left-Left case needs Right Rotation
                 return node.RotateRight();
-            case < -1 when key.CompareTo(node.Right.Data) > 0:
-                // RR
-                return node.RotateLeft();
-            case > 1 when key.CompareTo(node.Left.Data) > 0:
-                // LR
-                node.Left = node.Left.RotateLeft(); 
-                return node.RotateRight();
-            case < -1 when key.CompareTo(node.Right.Data) < 0:
-                // RL
-                node.Right = node.Right.RotateRight(); 
-                return node.RotateLeft();
-            default:
-                return node;
+            }
+            
+            //Left-Right case needs Left-Right rotation
+            node.Left = node.Left.RotateLeft();
+            return node.RotateRight();
         }
+        else if (node.CalculateBalanceFactor() < -1) // Right subtree to tall
+        {
+             if (node.Right.CalculateBalanceFactor() <= 0) // check if grandchild is at right
+             {
+                 // Right-Right case needs Left Rotation
+                 return node.RotateLeft();
+             }
+             
+             // Right-Left case needs Right-Left rotations
+             node.Right = node.Right.RotateRight();
+             return node.RotateLeft();
+        }
+
+        return node;
     }
 }

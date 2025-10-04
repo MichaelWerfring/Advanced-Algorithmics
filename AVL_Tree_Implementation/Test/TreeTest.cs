@@ -422,4 +422,50 @@ public class TreeTests
         Assert.That(tree.Root.Right.Right, Is.Not.Null);
         Assert.That(tree.Root.Right.Right.Data, Is.EqualTo(6));
     }
+    
+    [Test]
+    public void DeletingNodesUntilTreeIsUnbalancedTriggersRebalanceToTheLeft()
+    {
+        var tree = new Tree<int>(new Node<int>(5));
+        tree.Insert(3);
+        tree.Insert(7);
+        tree.Insert(2);
+        tree.Insert(4);
+        tree.Insert(6);
+        tree.Insert(8);
+        
+        // Cause Imbalance
+        tree.Delete(8);
+        tree.Delete(7);
+        tree.Delete(6);
+        
+        Assert.That(tree.Root, Is.Not.Null);
+        Assert.That(tree.Root.Data, Is.EqualTo(3));
+        Assert.That(tree.Root.Left.Data, Is.EqualTo(2));
+        Assert.That(tree.Root.Right.Data, Is.EqualTo(5));
+        Assert.That(tree.Root.Right.Left.Data, Is.EqualTo(4));
+    }
+    
+    [Test]
+    public void DeletingNodesUntilTreeIsUnbalancedTriggersRebalanceToTheRight()
+    {
+        var tree = new Tree<int>(new Node<int>(5));
+        tree.Insert(3);
+        tree.Insert(7);
+        tree.Insert(2);
+        tree.Insert(4);
+        tree.Insert(6);
+        tree.Insert(8);
+        
+        // Cause Imbalance
+        tree.Delete(2);
+        tree.Delete(4);
+        tree.Delete(3);
+        
+        Assert.That(tree.Root, Is.Not.Null);
+        Assert.That(tree.Root.Data, Is.EqualTo(7));
+        Assert.That(tree.Root.Left.Data, Is.EqualTo(5));
+        Assert.That(tree.Root.Left.Right.Data, Is.EqualTo(6));
+        Assert.That(tree.Root.Right.Data, Is.EqualTo(8));
+    }
 }
