@@ -47,12 +47,12 @@ public class Tree<T>
 
     private bool Search(Node<T> node, T item)
     {
-        if (item.CompareTo(node.Data) == 0)
+        if (node.IsEqualTo(item))
         {
             return true;
         }
         
-        if (item.CompareTo(node.Data) < 0)
+        if (node.IsLargerThan(item))
         {
             if (node.Left == null)
                 return false;
@@ -73,18 +73,19 @@ public class Tree<T>
         if (node == null)
             return new Node<T>(item);
 
-        //TODO: Implement > and == etc. in Node class
-        switch (item.CompareTo(node.Data))
+        if (node.IsEqualTo(item))
         {
-            case 0:
-                // return as is so items cannot be inserted twice
-                return node;
-            case < 0:
-                node.Left = Insert(node.Left, item);
-                break;
-            default:
-                node.Right = Insert(node.Right, item);
-                break;
+            return node;
+        }
+
+        if (node.IsLargerThan(item))
+        {
+            node.Left = Insert(node.Left, item);
+        }
+
+        if (node.IsSmallerThan(item))
+        {
+            node.Right = Insert(node.Right, item);
         }
         
         // Update height of current node
@@ -95,7 +96,7 @@ public class Tree<T>
 
     private Node<T>? Delete(Node<T> node, T item)
     {
-        if (item.CompareTo(node.Data) < 0)// Key is smaller than current
+        if (node.IsLargerThan(item))
         {
             // Item is not found, do not change the tree
             if (node.Left == null)
@@ -103,7 +104,7 @@ public class Tree<T>
             
             node.Left = Delete(node.Left, item);
         } 
-        else if (item.CompareTo(node.Data) > 0) // Key is larger than current
+        else if (node.IsSmallerThan(item))
         {
             // Item is not found, do not change the tree
             if (node.Right == null)
@@ -111,7 +112,7 @@ public class Tree<T>
             
             node.Right = Delete(node.Right, item);
         }
-        else
+        else // Item found, needs to be deleted
         {
             // No Children: Just delete
             if (node.Left == null && node.Right == null)
@@ -122,7 +123,6 @@ public class Tree<T>
             // One Child: Node takes place of parent
             if (node.Left != null && node.Right == null)
             {
-                // TODO: Do I have to null out node? 
                 return node.Left;
             }
             if (node.Left == null && node.Right != null)
@@ -134,8 +134,8 @@ public class Tree<T>
             if (node.Left != null && node.Right != null)
             {
                 var leftMax = node.Left.FindMax();
-                node.Data = leftMax.Data; 
-                node.Left = Delete(node.Left, leftMax.Data); // Remove duplicates
+                node.Key = leftMax.Key; 
+                node.Left = Delete(node.Left, leftMax.Key); // Remove duplicates
             }
         }
 

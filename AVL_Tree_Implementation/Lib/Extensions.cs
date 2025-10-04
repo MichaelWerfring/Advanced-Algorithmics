@@ -78,4 +78,22 @@ public static class Extensions
 
         return node.Right.FindMax();
     }
+
+    public static bool IsLargerThan<T>(this Node<T> node, T key)
+        where T : IComparable<T>
+    {
+        return node.Key.CompareTo(key) > 0;
+    }
+    
+    public static bool IsEqualTo<T>(this Node<T> node, T key)
+        where T : IComparable<T>
+    {
+        return node.Key.CompareTo(key) == 0;
+    }
+    
+    public static bool IsSmallerThan<T>(this Node<T> node, T key)
+        where T : IComparable<T>
+    {
+        return node.Key.CompareTo(key) < 0;
+    }
 }

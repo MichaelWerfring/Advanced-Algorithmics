@@ -1,7 +1,6 @@
 ﻿namespace Lib;
 
-// TODO: Rename Data to Key
-public class Node<T> (T data)
+public class Node<T> (T key)
     where T : IComparable<T>
 {
     public Node<T>? Left { get; set; }
@@ -10,5 +9,5 @@ public class Node<T> (T data)
 
     public int Height { get; set; } = 1;
 
-    public T Data { get; set; } = data;
+    public T Key { get; set; } = key;
 }

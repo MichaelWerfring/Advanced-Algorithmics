@@ -5,8 +5,6 @@ namespace Test;
 
 public class TreeTests
 {
-    
-    //TODO: Refactor to work with strings and floats as well
     [Test]
     public void EmptyTreeHasHeightZero()
     {
@@ -32,7 +30,7 @@ public class TreeTests
         tree.Insert(newNumber);
         
         Assert.That(tree.Root, Is.Not.Null);
-        Assert.That(tree.Root.Data, Is.EqualTo(newNumber));
+        Assert.That(tree.Root.Key, Is.EqualTo(newNumber));
     }
 
     [Test]
@@ -45,7 +43,7 @@ public class TreeTests
         
         Assert.That(tree.Root, Is.Not.Null);
         Assert.That(tree.Root.Right, Is.Not.Null);
-        Assert.That(tree.Root.Right.Data, Is.EqualTo(newNumber));
+        Assert.That(tree.Root.Right.Key, Is.EqualTo(newNumber));
     }
     
     [Test]
@@ -58,7 +56,7 @@ public class TreeTests
         
         Assert.That(tree.Root, Is.Not.Null);
         Assert.That(tree.Root.Left, Is.Not.Null);
-        Assert.That(tree.Root.Left.Data, Is.EqualTo(newNumber));
+        Assert.That(tree.Root.Left.Key, Is.EqualTo(newNumber));
     }
 
     [Test]
@@ -99,13 +97,13 @@ public class TreeTests
         var root = tree.Root;
         
         Assert.That(root, Is.Not.Null);
-        Assert.That(root.Data, Is.EqualTo(2));
+        Assert.That(root.Key, Is.EqualTo(2));
         
         Assert.That(root.Left, Is.Not.Null);
-        Assert.That(root.Left.Data, Is.EqualTo(1));
+        Assert.That(root.Left.Key, Is.EqualTo(1));
         
         Assert.That(root.Right, Is.Not.Null);
-        Assert.That(root.Right.Data, Is.EqualTo(3));
+        Assert.That(root.Right.Key, Is.EqualTo(3));
         
         // Check that no references are pointing upwards in the tree
         Assert.That(root.Right.Right, Is.Null);
@@ -127,13 +125,13 @@ public class TreeTests
         var root = tree.Root;
         
         Assert.That(root, Is.Not.Null);
-        Assert.That(root.Data, Is.EqualTo(2));
+        Assert.That(root.Key, Is.EqualTo(2));
         
         Assert.That(root.Left, Is.Not.Null);
-        Assert.That(root.Left.Data, Is.EqualTo(1));
+        Assert.That(root.Left.Key, Is.EqualTo(1));
         
         Assert.That(root.Right, Is.Not.Null);
-        Assert.That(root.Right.Data, Is.EqualTo(3));
+        Assert.That(root.Right.Key, Is.EqualTo(3));
         
         // Check that no references are pointing upwards in the tree
         Assert.That(root.Right.Right, Is.Null);
@@ -162,12 +160,12 @@ public class TreeTests
         Assert.That(root.Left.Right, Is.Not.Null);
         Assert.That(root.Right.Right, Is.Not.Null);
         
-        Assert.That(root.Data, Is.EqualTo(4));
-        Assert.That(root.Left.Data, Is.EqualTo(2));
-        Assert.That(root.Right.Data, Is.EqualTo(5));
-        Assert.That(root.Left.Left.Data, Is.EqualTo(1));
-        Assert.That(root.Left.Right.Data, Is.EqualTo(3));
-        Assert.That(root.Right.Right.Data, Is.EqualTo(6));
+        Assert.That(root.Key, Is.EqualTo(4));
+        Assert.That(root.Left.Key, Is.EqualTo(2));
+        Assert.That(root.Right.Key, Is.EqualTo(5));
+        Assert.That(root.Left.Left.Key, Is.EqualTo(1));
+        Assert.That(root.Left.Right.Key, Is.EqualTo(3));
+        Assert.That(root.Right.Right.Key, Is.EqualTo(6));
     }
     
     [Test]
@@ -189,12 +187,12 @@ public class TreeTests
         Assert.That(root.Right.Right, Is.Not.Null);
         Assert.That(root.Right.Left, Is.Not.Null);
 
-        Assert.That(root.Data, Is.EqualTo(3));
-        Assert.That(root.Left.Data, Is.EqualTo(2));
-        Assert.That(root.Right.Data, Is.EqualTo(5));
-        Assert.That(root.Left.Left.Data, Is.EqualTo(1));
-        Assert.That(root.Right.Right.Data, Is.EqualTo(6));
-        Assert.That(root.Right.Left.Data, Is.EqualTo(4));
+        Assert.That(root.Key, Is.EqualTo(3));
+        Assert.That(root.Left.Key, Is.EqualTo(2));
+        Assert.That(root.Right.Key, Is.EqualTo(5));
+        Assert.That(root.Left.Left.Key, Is.EqualTo(1));
+        Assert.That(root.Right.Right.Key, Is.EqualTo(6));
+        Assert.That(root.Right.Left.Key, Is.EqualTo(4));
         
         Assert.That(root.Height, Is.EqualTo(3));
         Assert.That(root.Left.Height, Is.EqualTo(2));
@@ -286,7 +284,7 @@ public class TreeTests
         tree.Delete(1);
         
         Assert.That(tree.Root, Is.Not.Null);
-        Assert.That(tree.Root.Data, Is.EqualTo(0));
+        Assert.That(tree.Root.Key, Is.EqualTo(0));
     }
 
     [Test]
@@ -299,7 +297,7 @@ public class TreeTests
         tree.Delete(1);
         
         Assert.That(tree.Root, Is.Not.Null);
-        Assert.That(tree.Root.Data, Is.EqualTo(0));
+        Assert.That(tree.Root.Key, Is.EqualTo(0));
     }
     
     [Test]
@@ -312,7 +310,7 @@ public class TreeTests
         tree.Delete(1);
         
         Assert.That(tree.Root, Is.Not.Null);
-        Assert.That(tree.Root.Data, Is.EqualTo(2));
+        Assert.That(tree.Root.Key, Is.EqualTo(2));
     }
     
     [Test]
@@ -327,7 +325,7 @@ public class TreeTests
         tree.Delete(1);
         
         Assert.That(tree.Root, Is.Not.Null);
-        Assert.That(tree.Root.Data, Is.EqualTo(0));
+        Assert.That(tree.Root.Key, Is.EqualTo(0));
     }
     
     [Test]
@@ -343,11 +341,11 @@ public class TreeTests
         tree.Delete(4);
         
         Assert.That(tree.Root, Is.Not.Null);
-        Assert.That(tree.Root.Data, Is.EqualTo(2));
+        Assert.That(tree.Root.Key, Is.EqualTo(2));
         Assert.That(tree.Root.Left, Is.Not.Null);
-        Assert.That(tree.Root.Left.Data, Is.EqualTo(1));
+        Assert.That(tree.Root.Left.Key, Is.EqualTo(1));
         Assert.That(tree.Root.Right, Is.Not.Null);
-        Assert.That(tree.Root.Right.Data, Is.EqualTo(3));
+        Assert.That(tree.Root.Right.Key, Is.EqualTo(3));
         Assert.That(tree.Root.Right.Right, Is.Null);
     }
 
@@ -364,11 +362,11 @@ public class TreeTests
         tree.Delete(4);
         
         Assert.That(tree.Root, Is.Not.Null);
-        Assert.That(tree.Root.Data, Is.EqualTo(2));
+        Assert.That(tree.Root.Key, Is.EqualTo(2));
         Assert.That(tree.Root.Left, Is.Not.Null);
-        Assert.That(tree.Root.Left.Data, Is.EqualTo(1));
+        Assert.That(tree.Root.Left.Key, Is.EqualTo(1));
         Assert.That(tree.Root.Right, Is.Not.Null);
-        Assert.That(tree.Root.Right.Data, Is.EqualTo(3));
+        Assert.That(tree.Root.Right.Key, Is.EqualTo(3));
         Assert.That(tree.Root.Right.Right, Is.Null);
     }
     
@@ -385,11 +383,11 @@ public class TreeTests
         tree.Delete(3);
         
         Assert.That(tree.Root, Is.Not.Null);
-        Assert.That(tree.Root.Data, Is.EqualTo(2));
+        Assert.That(tree.Root.Key, Is.EqualTo(2));
         Assert.That(tree.Root.Left, Is.Not.Null);
-        Assert.That(tree.Root.Left.Data, Is.EqualTo(1));
+        Assert.That(tree.Root.Left.Key, Is.EqualTo(1));
         Assert.That(tree.Root.Right, Is.Not.Null);
-        Assert.That(tree.Root.Right.Data, Is.EqualTo(4));
+        Assert.That(tree.Root.Right.Key, Is.EqualTo(4));
         Assert.That(tree.Root.Right.Right, Is.Null);
     }
 
@@ -411,22 +409,22 @@ public class TreeTests
 
         var root = tree.Root;
         Assert.That(root, Is.Not.Null);
-        Assert.That(root.Data, Is.EqualTo(4));
+        Assert.That(root.Key, Is.EqualTo(4));
         Assert.That(root.Height, Is.EqualTo(3));
         Assert.That(root.Left, Is.Not.Null);
-        Assert.That(root.Left.Data, Is.EqualTo(1));
+        Assert.That(root.Left.Key, Is.EqualTo(1));
         Assert.That(root.Left.Height, Is.EqualTo(2));
         Assert.That(root.Right, Is.Not.Null);
-        Assert.That(root.Right.Data, Is.EqualTo(5));
+        Assert.That(root.Right.Key, Is.EqualTo(5));
         Assert.That(root.Right.Height, Is.EqualTo(2));
         Assert.That(root.Left.Left, Is.Not.Null);
-        Assert.That(root.Left.Left.Data, Is.EqualTo(0));
+        Assert.That(root.Left.Left.Key, Is.EqualTo(0));
         Assert.That(root.Left.Left.Height, Is.EqualTo(1));
         Assert.That(root.Left.Right, Is.Not.Null);
-        Assert.That(root.Left.Right.Data, Is.EqualTo(3));
+        Assert.That(root.Left.Right.Key, Is.EqualTo(3));
         Assert.That(root.Left.Right.Height, Is.EqualTo(1));
         Assert.That(root.Right.Right, Is.Not.Null);
-        Assert.That(root.Right.Right.Data, Is.EqualTo(6));
+        Assert.That(root.Right.Right.Key, Is.EqualTo(6));
         Assert.That(root.Right.Right.Height, Is.EqualTo(1));
     }
     
@@ -449,19 +447,19 @@ public class TreeTests
 
         var root = tree.Root;
         Assert.That(root, Is.Not.Null);
-        Assert.That(root.Data, Is.EqualTo(3));
+        Assert.That(root.Key, Is.EqualTo(3));
         Assert.That(root.Height, Is.EqualTo(3));
         
         Assert.That(root.Left, Is.Not.Null);
-        Assert.That(root.Left.Data, Is.EqualTo(2));
+        Assert.That(root.Left.Key, Is.EqualTo(2));
         Assert.That(root.Left.Height, Is.EqualTo(1));
         
         Assert.That(root.Right, Is.Not.Null);
-        Assert.That(root.Right.Data, Is.EqualTo(5));
+        Assert.That(root.Right.Key, Is.EqualTo(5));
         Assert.That(root.Right.Height, Is.EqualTo(2));
         
         Assert.That(root.Right.Left, Is.Not.Null);
-        Assert.That(root.Right.Left.Data, Is.EqualTo(4));
+        Assert.That(root.Right.Left.Key, Is.EqualTo(4));
         Assert.That(root.Right.Left.Height, Is.EqualTo(1));
     }
     
@@ -484,19 +482,19 @@ public class TreeTests
 
         var root = tree.Root;
         Assert.That(root, Is.Not.Null);
-        Assert.That(root.Data, Is.EqualTo(7));
+        Assert.That(root.Key, Is.EqualTo(7));
         Assert.That(root.Height, Is.EqualTo(3));
         
         Assert.That(root.Left, Is.Not.Null);
-        Assert.That(root.Left.Data, Is.EqualTo(5));
+        Assert.That(root.Left.Key, Is.EqualTo(5));
         Assert.That(root.Left.Height, Is.EqualTo(2));
         
         Assert.That(root.Left.Right, Is.Not.Null);
-        Assert.That(root.Left.Right.Data, Is.EqualTo(6));
+        Assert.That(root.Left.Right.Key, Is.EqualTo(6));
         Assert.That(root.Left.Right.Height, Is.EqualTo(1));
         
         Assert.That(root.Right, Is.Not.Null);
-        Assert.That(root.Right.Data, Is.EqualTo(8));
+        Assert.That(root.Right.Key, Is.EqualTo(8));
         Assert.That(root.Right.Height, Is.EqualTo(1));
     }
 

@@ -27,6 +27,6 @@ public class NodeTests
         int testNumber = 75;
         var node = new Node<int>(testNumber);
         
-        Assert.That(node.Data, Is.EqualTo(testNumber));
+        Assert.That(node.Key, Is.EqualTo(testNumber));
     }
 }

@@ -101,13 +101,13 @@ public class ExtensionsTests
         var rotatedSubtree = root.RotateLeft();
         
         Assert.That(rotatedSubtree, Is.Not.Null);
-        Assert.That(rotatedSubtree.Data, Is.EqualTo(2));
+        Assert.That(rotatedSubtree.Key, Is.EqualTo(2));
         
         Assert.That(rotatedSubtree.Left, Is.Not.Null);
-        Assert.That(rotatedSubtree.Left.Data, Is.EqualTo(1));
+        Assert.That(rotatedSubtree.Left.Key, Is.EqualTo(1));
         
         Assert.That(rotatedSubtree.Right, Is.Not.Null);
-        Assert.That(rotatedSubtree.Right.Data, Is.EqualTo(3));
+        Assert.That(rotatedSubtree.Right.Key, Is.EqualTo(3));
         
         // Check that no references are pointing upwards in the tree
         Assert.That(rotatedSubtree.Right.Right, Is.Null);
@@ -136,13 +136,13 @@ public class ExtensionsTests
         var rotatedSubtree = root.RotateRight();
         
         Assert.That(rotatedSubtree, Is.Not.Null);
-        Assert.That(rotatedSubtree.Data, Is.EqualTo(2));
+        Assert.That(rotatedSubtree.Key, Is.EqualTo(2));
         
         Assert.That(rotatedSubtree.Left, Is.Not.Null);
-        Assert.That(rotatedSubtree.Left.Data, Is.EqualTo(1));
+        Assert.That(rotatedSubtree.Left.Key, Is.EqualTo(1));
         
         Assert.That(rotatedSubtree.Right, Is.Not.Null);
-        Assert.That(rotatedSubtree.Right.Data, Is.EqualTo(3));
+        Assert.That(rotatedSubtree.Right.Key, Is.EqualTo(3));
         
         // Check that no references are pointing upwards in the tree
         Assert.That(rotatedSubtree.Right.Right, Is.Null);
@@ -213,7 +213,43 @@ public class ExtensionsTests
         var max = node.FindMax();
         
         Assert.That(max, Is.Not.Null);
-        Assert.That(max.Data, Is.EqualTo(2));
-    }   
+        Assert.That(max.Key, Is.EqualTo(2));
+    }
+
+    [TestCase(1,2,true)]
+    [TestCase(2,1,false)]
+    [TestCase(1,1,false)]
+    public void IsSmallerThanReturnsCorrectResult(int nodeValue, int key, bool expected)
+    {
+        var first = new Node<int>(nodeValue);
+
+        bool result = first.IsSmallerThan(key);
+        
+        Assert.That(result, Is.EqualTo(expected));
+    }
+ 
+    [TestCase(1,2,false)]
+    [TestCase(2,1,true)]
+    [TestCase(1,1,false)]
+    public void IsLargerThanReturnsCorrectResult(int nodeValue, int key, bool expected)
+    {
+        var first = new Node<int>(nodeValue);
+        var second = new Node<int>(key);
+
+        bool result = first.IsLargerThan(key);
+        
+        Assert.That(result, Is.EqualTo(expected));
+    }
     
+    [TestCase(1,2,false)]
+    [TestCase(2,1,false)]
+    [TestCase(1,1,true)]
+    public void IsEqualReturnsCorrectResult(int nodeValue, int key, bool expected)
+    {
+        var first = new Node<int>(nodeValue);
+
+        bool result = first.IsEqualTo(key);
+        
+        Assert.That(result, Is.EqualTo(expected));
+    }
 }
