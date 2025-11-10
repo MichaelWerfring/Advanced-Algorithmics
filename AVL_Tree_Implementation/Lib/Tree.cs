@@ -26,12 +26,12 @@ public class Tree<T>
 
     public Node<T>? Root { get; private set; }
     
-    public bool Search(T item)
+    public bool Contains(T item)
     {
         if (Root == null)
             return false;
 
-        return Search(Root, item);
+        return Contains(Root, item);
     }
 
     public void Insert(T item)
@@ -39,13 +39,13 @@ public class Tree<T>
         Root = Insert(Root, item);
     }
     
-    public void Delete(T item)
+    public void Remove(T item)
     {
         if (Root != null) 
-            Root = Delete(Root, item);
+            Root = Remove(Root, item);
     }
 
-    private bool Search(Node<T> node, T item)
+    private bool Contains(Node<T> node, T item)
     {
         if (node.IsEqualTo(item))
         {
@@ -57,14 +57,14 @@ public class Tree<T>
             if (node.Left == null)
                 return false;
             
-            return Search(node.Left, item);
+            return Contains(node.Left, item);
         }
         else
         {
             if (node.Right == null)
                 return false;
 
-            return Search(node.Right, item);
+            return Contains(node.Right, item);
         }
     }
     
@@ -94,7 +94,7 @@ public class Tree<T>
         return BalanceTree(node);
     }
 
-    private Node<T>? Delete(Node<T> node, T item)
+    private Node<T>? Remove(Node<T> node, T item)
     {
         if (node.IsLargerThan(item))
         {
@@ -102,7 +102,7 @@ public class Tree<T>
             if (node.Left == null)
                 return node;
             
-            node.Left = Delete(node.Left, item);
+            node.Left = Remove(node.Left, item);
         } 
         else if (node.IsSmallerThan(item))
         {
@@ -110,7 +110,7 @@ public class Tree<T>
             if (node.Right == null)
                 return node;
             
-            node.Right = Delete(node.Right, item);
+            node.Right = Remove(node.Right, item);
         }
         else // Item found, needs to be deleted
         {
@@ -135,7 +135,7 @@ public class Tree<T>
             {
                 var leftMax = node.Left.FindMax();
                 node.Key = leftMax.Key; 
-                node.Left = Delete(node.Left, leftMax.Key); // Remove duplicates
+                node.Left = Remove(node.Left, leftMax.Key); // Remove duplicates
             }
         }
 

@@ -76,7 +76,7 @@ class Program
         {
             foreach (var num in searchNumbers)
             {
-                tree.Search(num);
+                tree.Contains(num);
             }
         });
 
@@ -108,7 +108,7 @@ class Program
         {
             foreach (var num in searchNumbers)
             {
-                tree.Delete(num);
+                tree.Remove(num);
             }
         });
 

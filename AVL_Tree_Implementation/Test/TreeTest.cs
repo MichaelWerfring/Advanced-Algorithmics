@@ -257,64 +257,64 @@ public class TreeTests
     }
 
     [Test]
-    public void DeletingItemFromEmptyTreeDoesNotChangeTree()
+    public void RemovingItemFromEmptyTreeDoesNotChangeTree()
     {
         var tree = new Tree<int>();
         
-        tree.Delete(0);
+        tree.Remove(0);
         
         Assert.That(tree.Root, Is.Null);
     }
 
     [Test]
-    public void DeletingItemFromTreeWithSingleItemLeavesEmptyTree()
+    public void RemovingItemFromTreeWithSingleItemLeavesEmptyTree()
     {
         var tree = new Tree<int>(new Node<int>(0));
         
-        tree.Delete(0);
+        tree.Remove(0);
         
         Assert.That(tree.Root, Is.Null);
     }
 
     [Test]
-    public void DeletingItemWhichIsNotInTreeDoesNotChangeTree()
+    public void RemovingItemWhichIsNotInTreeDoesNotChangeTree()
     {
         var tree = new Tree<int>(new Node<int>(0));
         
-        tree.Delete(1);
+        tree.Remove(1);
         
         Assert.That(tree.Root, Is.Not.Null);
         Assert.That(tree.Root.Key, Is.EqualTo(0));
     }
 
     [Test]
-    public void DeletingRootWithLeftChildReplacesRootWithChild()
+    public void RemovingRootWithLeftChildReplacesRootWithChild()
     {
         var root = new Node<int>(1);
         root.Left = new Node<int>(0);
         var tree = new Tree<int>(root);
         
-        tree.Delete(1);
+        tree.Remove(1);
         
         Assert.That(tree.Root, Is.Not.Null);
         Assert.That(tree.Root.Key, Is.EqualTo(0));
     }
     
     [Test]
-    public void DeletingRootWithRightChildReplacesRootWithChild()
+    public void RemovingRootWithRightChildReplacesRootWithChild()
     {
         var root = new Node<int>(1);
         root.Right = new Node<int>(2);
         var tree = new Tree<int>(root);
         
-        tree.Delete(1);
+        tree.Remove(1);
         
         Assert.That(tree.Root, Is.Not.Null);
         Assert.That(tree.Root.Key, Is.EqualTo(2));
     }
     
     [Test]
-    public void DeletingRootWithTwoChildrenReplacesRootWithLeftMaxChild()
+    public void RemovingRootWithTwoChildrenReplacesRootWithLeftMaxChild()
     {
         var root = new Node<int>(1);
         root.Left = new Node<int>(0);
@@ -322,14 +322,14 @@ public class TreeTests
         
         var tree = new Tree<int>(root);
         
-        tree.Delete(1);
+        tree.Remove(1);
         
         Assert.That(tree.Root, Is.Not.Null);
         Assert.That(tree.Root.Key, Is.EqualTo(0));
     }
     
     [Test]
-    public void DeletingLeafItemDeletesTheItemButDoesNotChangeRestOfTheTree()
+    public void RemovingLeafItemRemovesTheItemButDoesNotChangeRestOfTheTree()
     {
         var root = new Node<int>(2);
         root.Left = new Node<int>(1);
@@ -338,7 +338,7 @@ public class TreeTests
 
         var tree = new Tree<int>(root);
         
-        tree.Delete(4);
+        tree.Remove(4);
         
         Assert.That(tree.Root, Is.Not.Null);
         Assert.That(tree.Root.Key, Is.EqualTo(2));
@@ -350,7 +350,7 @@ public class TreeTests
     }
 
     [Test]
-    public void DeletingItemWithLeftChildDeletesTheItemAndReplacesItWithChildWithoutChangingRestOfTheTree()
+    public void RemovingItemWithLeftChildRemovesTheItemAndReplacesItWithChildWithoutChangingRestOfTheTree()
     {
         var root = new Node<int>(2);
         root.Left = new Node<int>(1);
@@ -359,7 +359,7 @@ public class TreeTests
 
         var tree = new Tree<int>(root);
         
-        tree.Delete(4);
+        tree.Remove(4);
         
         Assert.That(tree.Root, Is.Not.Null);
         Assert.That(tree.Root.Key, Is.EqualTo(2));
@@ -371,7 +371,7 @@ public class TreeTests
     }
     
     [Test]
-    public void DeletingItemWithRightChildDeletesTheItemAndReplacesItWithChildWithoutChangingRestOfTheTree()
+    public void RemovingItemWithRightChildRemovesTheItemAndReplacesItWithChildWithoutChangingRestOfTheTree()
     {
         var root = new Node<int>(2);
         root.Left = new Node<int>(1);
@@ -380,7 +380,7 @@ public class TreeTests
 
         var tree = new Tree<int>(root);
         
-        tree.Delete(3);
+        tree.Remove(3);
         
         Assert.That(tree.Root, Is.Not.Null);
         Assert.That(tree.Root.Key, Is.EqualTo(2));
@@ -392,7 +392,7 @@ public class TreeTests
     }
 
     [Test]
-    public void DeletingItemWithTwoChildrenReplacesItWithMaxLeftChildAndUpdatesHeights()
+    public void RemovingItemWithTwoChildrenReplacesItWithMaxLeftChildAndUpdatesHeights()
     {
         var tree = new Tree<int>();
         tree.Insert(0);
@@ -405,7 +405,7 @@ public class TreeTests
         // element that will be the max left from 2
         tree.Insert(1);
         
-        tree.Delete(2);
+        tree.Remove(2);
 
         var root = tree.Root;
         Assert.That(root, Is.Not.Null);
@@ -429,7 +429,7 @@ public class TreeTests
     }
     
     [Test]
-    public void DeletingNodesUntilTreeIsUnbalancedTriggersRebalanceToTheLeftAndUpdatesHeights()
+    public void RemovingNodesUntilTreeIsUnbalancedTriggersRebalanceToTheLeftAndUpdatesHeights()
     {
         var tree = new Tree<int>();
         tree.Insert(5);
@@ -441,9 +441,9 @@ public class TreeTests
         tree.Insert(8);
         
         // Cause Imbalance
-        tree.Delete(8);
-        tree.Delete(7);
-        tree.Delete(6);
+        tree.Remove(8);
+        tree.Remove(7);
+        tree.Remove(6);
 
         var root = tree.Root;
         Assert.That(root, Is.Not.Null);
@@ -464,7 +464,7 @@ public class TreeTests
     }
     
     [Test]
-    public void DeletingNodesUntilTreeIsUnbalancedTriggersRebalanceToTheRightAndUpdatesHeights()
+    public void RemovingNodesUntilTreeIsUnbalancedTriggersRebalanceToTheRightAndUpdatesHeights()
     {
         var tree = new Tree<int>();
         tree.Insert(5);
@@ -476,9 +476,9 @@ public class TreeTests
         tree.Insert(8);
         
         // Cause Imbalance
-        tree.Delete(2);
-        tree.Delete(4);
-        tree.Delete(3);
+        tree.Remove(2);
+        tree.Remove(4);
+        tree.Remove(3);
 
         var root = tree.Root;
         Assert.That(root, Is.Not.Null);
@@ -499,11 +499,11 @@ public class TreeTests
     }
 
     [Test]
-    public void SearchReturnsFalseWhenTreeIsEmpty()
+    public void ContainsReturnsFalseWhenTreeIsEmpty()
     {
         var tree = new Tree<int>();
 
-        bool isInTree = tree.Search(0);
+        bool isInTree = tree.Contains(0);
         
         Assert.That(isInTree, Is.False);
     }
@@ -515,7 +515,7 @@ public class TreeTests
     [TestCase(5)]
     [TestCase(6)]
     [TestCase(7)]
-    public void SearchReturnsTrueWhenItemIsInTree(int needle)
+    public void ContainsReturnsTrueWhenItemIsInTree(int needle)
     {
         var tree = new Tree<int>();
         tree.Insert(1);
@@ -526,7 +526,7 @@ public class TreeTests
         tree.Insert(6);
         tree.Insert(7);
         
-        bool isInTree = tree.Search(needle);
+        bool isInTree = tree.Contains(needle);
         
         Assert.That(isInTree, Is.True);
     }
@@ -534,7 +534,7 @@ public class TreeTests
     [TestCase(0)]
     [TestCase(12)]
     [TestCase(23)]
-    public void SearchReturnsFalseWhenItemIsNotInTree(int needle)
+    public void ContainsReturnsFalseWhenItemIsNotInTree(int needle)
     {
         var tree = new Tree<int>();
         tree.Insert(1);
@@ -545,7 +545,7 @@ public class TreeTests
         tree.Insert(6);
         tree.Insert(7);
         
-        bool isInTree = tree.Search(needle);
+        bool isInTree = tree.Contains(needle);
         
         Assert.That(isInTree, Is.False);
     }
