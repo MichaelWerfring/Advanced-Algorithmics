@@ -84,7 +84,7 @@ public static class HuffmanCoding
                 Weight = pair.Value
             };
             
-            queue.Enqueue(node, pair.Value);
+            queue.Enqueue(node, node.Weight);
         }
         
         if (queue.Count < 2)
