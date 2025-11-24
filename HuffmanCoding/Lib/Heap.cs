@@ -9,24 +9,33 @@ public class Heap<T> where T : IComparable<T>
     public void Insert(T newItem)
     {
         _data.Add(newItem);
-
-        if (Count == 1) // First insert
-            return;
-        
+       
         int index = Count - 1;
-        int parentIndex = (index - 1) / 2;
-        T parent = _data[parentIndex];
         
-        while (parent.IsLargerThan(newItem))
+        while (index > 0)
         {
+            int parentIndex = (index - 1) / 2;
+            T parent = _data[parentIndex];
+
+            if (!parent.IsLargerThan(newItem))
+            {
+                break;
+            }
+            
             (_data[parentIndex], _data[index]) = (_data[index], _data[parentIndex]); //Pyhton-Style Swap
-            index = parentIndex;
+            
+            index = parentIndex; // Move up 
         }
     }
 
     public void Remove(T item)
     {
         
+    }
+
+    public List<T> ToList()
+    {
+        return _data.ToList();
     }
 
     public T Peek()
