@@ -9,7 +9,29 @@ public class Heap<T> where T : IComparable<T>
     public void Insert(T newItem)
     {
         _data.Add(newItem);
-       
+        HeapifyUp(newItem);
+    }
+
+    public void Remove(T item)
+    {
+        
+    }
+
+    public T Peek()
+    {
+        if (Count == 0)
+            throw new InvalidOperationException("The heap contains no elements.");
+        
+        return _data[0];
+    }
+    
+    public List<T> ToList()
+    {
+        return _data.ToList();
+    }
+
+    private void HeapifyUp(T newItem)
+    {
         int index = Count - 1;
         
         while (index > 0)
@@ -18,28 +40,11 @@ public class Heap<T> where T : IComparable<T>
             T parent = _data[parentIndex];
 
             if (!parent.IsLargerThan(newItem))
-            {
                 break;
-            }
             
             (_data[parentIndex], _data[index]) = (_data[index], _data[parentIndex]); //Pyhton-Style Swap
             
             index = parentIndex; // Move up 
         }
-    }
-
-    public void Remove(T item)
-    {
-        
-    }
-
-    public List<T> ToList()
-    {
-        return _data.ToList();
-    }
-
-    public T Peek()
-    {
-        return _data[0];
     }
 }
