@@ -68,12 +68,85 @@ public class HeapTest
     }
 
     [Test]
+    public void PopThrowsInvalidOperationExceptionOnEmptyHeap()
+    {
+        var heap = new Heap<int>();
+        Assert.Catch<InvalidOperationException>(() => heap.Pop());
+    }
+    
+    [Test]
+    public void PopRemovesItemFromHeapWithSingleElement()
+    {
+        var heap = new Heap<int>();
+        heap.Insert(17);
+
+        int item = heap.Pop();
+        
+        Assert.That(item, Is.EqualTo(17));
+        Assert.That(heap.Count, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void PopRemovesMinimumItemFromHeapWithMultipleElements()
+    {
+        var heap = new Heap<int>();
+        heap.Insert(17);
+        heap.Insert(7);
+        heap.Insert(27);
+
+        int initialCount = heap.Count;
+        int item = heap.Pop();
+        
+        Assert.That(item, Is.EqualTo(7));
+        Assert.That(heap.Count, Is.EqualTo(initialCount - 1));
+        Assert.That(IsHeapPropertyFulfilled<int>(heap.ToList()));
+    }
+    
+    [Test]
+    public void PopRemovesMultipleItemsFromHeapInCorrectOrder()
+    {
+        var heap = new Heap<int>();
+        heap.Insert(47);
+        heap.Insert(17);
+        heap.Insert(37);
+        heap.Insert(27);
+        heap.Insert(7);
+
+        int count = heap.Count;
+        var results = new List<int>();
+        for (int i = 0; i < count; i++)
+        {
+            results.Add(heap.Pop());
+        }
+        
+        Assert.That(results, Is.EqualTo(new List<int>([7,17,27,37,47])));
+    }
+    
+    [Test]
+    public void PopRemovesDuplicatesFromHeap()
+    {
+        var heap = new Heap<int>();
+        heap.Insert(17);
+        heap.Insert(17);
+        heap.Insert(7);
+
+        int count = heap.Count;
+        var results = new List<int>();
+        for (int i = 0; i < count; i++)
+        {
+            results.Add(heap.Pop());
+        }
+        
+        Assert.That(results, Is.EqualTo(new List<int>([7,17,17])));
+    }
+    
+    [Test]
     public void PeekThrowsInvalidOperationExceptionOnEmptyHeap()
     {
         var heap = new Heap<int>();
         Assert.Catch<InvalidOperationException>(() => heap.Peek());
     }
-
+    
     [Test]
     public void PeekReturnsFirstItemOfHeapButDoesNotChangeIt()
     {
