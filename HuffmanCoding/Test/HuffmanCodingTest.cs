@@ -1,5 +1,6 @@
 ﻿using System.Net.Mime;
 using Lib;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace Test;
 
@@ -141,20 +142,20 @@ public class HuffmanCodingTest
     public void EncodeThrowsArgumentExceptionWhenTextIsEmpty()
     {
         Tree encoding = new Tree();
-        Assert.Catch<ArgumentException>(() => HuffmanCoding.EncodeString("", encoding));
+        Assert.Catch<ArgumentException>(() => HuffmanCoding.Encode("", encoding));
     }
     
     [Test]
     public void EncodeThrowsArgumentExceptionWhenTextNull()
     {
         Tree encoding = new Tree();
-        Assert.Catch<ArgumentException>(() => HuffmanCoding.EncodeString(null!, encoding));
+        Assert.Catch<ArgumentException>(() => HuffmanCoding.Encode(null!, encoding));
     }
     
     [Test]
     public void EncodeThrowsArgumentNullExceptionWhenEncodingIsNull()
     {
-        Assert.Catch<ArgumentNullException>(() => HuffmanCoding.EncodeString("ABCDEFG", null!));
+        Assert.Catch<ArgumentNullException>(() => HuffmanCoding.Encode("ABCDEFG", null!));
     }
 
     [Test]
@@ -163,7 +164,7 @@ public class HuffmanCodingTest
         string text = "ABRACADABRA";
         var tree = HuffmanCoding.BuildTree(text);
         
-        string result = HuffmanCoding.EncodeString(text, tree);
+        string result = HuffmanCoding.Encode(text, tree);
         
         Assert.That(result, Is.EqualTo("01101001110011110110100"));
     }
@@ -180,6 +181,56 @@ public class HuffmanCodingTest
             Right = new Tree { Character = 'B', Weight = 1 } // 1
         };
         
-        Assert.Throws<InvalidOperationException>(() => HuffmanCoding.EncodeString(text, tree));
+        Assert.Throws<InvalidOperationException>(() => HuffmanCoding.Encode(text, tree));
+    }
+
+    [Test]
+    public void DecodeThrowsArgumentExceptionWhenStringIsEmpty()
+    {
+        Tree encoding = new Tree { Character = 'A' };
+
+        Assert.Catch(() => HuffmanCoding.Decode(string.Empty, encoding));
+    }
+
+    [Test]
+    public void DecodeThrowsArgumentNullExceptionWhenStringIsNull()
+    {
+        Tree encoding = new Tree { Character = 'A' };
+
+        Assert.Catch(() => HuffmanCoding.Decode(null!, encoding));
+    }
+
+    [Test]
+    public void DecodeThrowsArgumentNullExceptionWhenTreeIsNull()
+    {
+        Assert.Catch<ArgumentNullException>(() => HuffmanCoding.Decode("0101", null!));
+    }
+
+    [Test]
+    public void DecodeCorrectlyDecodesString()
+    {
+        Tree root = new Tree();
+        root.Left = new Tree { Character = 'A' };
+        root.Right = new Tree { Character = 'B' };
+
+        string input = "01011"; 
+        string expected = "ABABB";
+        
+        string result = HuffmanCoding.Decode(input, root);
+        
+        Assert.That(expected, Is.EqualTo(result));
+    }
+    
+    [Test]
+    public void EncodingAndThenDecodingReturnsTheOriginalString()
+    {
+        string text = "ABRACADABRA";
+        var tree = HuffmanCoding.BuildTree(text);
+        
+        string encoded = HuffmanCoding.Encode(text, tree);
+        string decoded = HuffmanCoding.Decode(encoded, tree);
+        
+        Assert.That(text, Is.EqualTo(decoded));
+        Assert.That(text, Is.Not.EqualTo(encoded));
     }
 }

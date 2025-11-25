@@ -2,6 +2,9 @@
 
 namespace Lib;
 
+//TODO: Hide GetCharacterMap, CountCharacters and BuildTree
+//TODO: Test with files
+//TODO: Test Decode with shitty tree
 public static class HuffmanCoding
 {
     /// <summary>
@@ -14,7 +17,7 @@ public static class HuffmanCoding
     /// <exception cref="ArgumentNullException">Is thrown if the tree is null.</exception>
     /// <exception cref="InvalidOperationException">Is thrown if the string
     /// contains characters that are not in the tree</exception>
-    public static string EncodeString(string text, Tree tree)
+    public static string Encode(string text, Tree tree)
     {
         ArgumentException.ThrowIfNullOrEmpty(text);
         ArgumentNullException.ThrowIfNull(tree);
@@ -135,5 +138,35 @@ public static class HuffmanCoding
         }
 
         return characterMap;
+    }
+
+    public static string Decode(string binary, Tree encoding)
+    {
+        ArgumentNullException.ThrowIfNull(binary);
+        ArgumentNullException.ThrowIfNull(encoding);
+        ArgumentException.ThrowIfNullOrEmpty(binary);
+
+        var sb = new StringBuilder();
+        var current = encoding; // start with root
+        foreach (var item in binary)
+        {
+            // 0 is Left and 1 is Right
+            if (item == '0')
+            {
+                current = current.Left;
+            }
+            else
+            {
+                current = current.Right;
+            }
+            
+            if (current.Left == null || current.Right == null)
+            {
+                sb.Append(current.Character);
+                current = encoding; //set back to root
+            }
+        }
+        
+        return sb.ToString();
     }
 }

@@ -4,6 +4,7 @@ namespace Test;
 
 public class TreeTest
 {
+    [Test]
     public void CompareToThrowsArgumentNullExceptionWhenOtherIsNull()
     {
         var self = new Tree();
