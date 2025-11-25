@@ -2,19 +2,17 @@
 
 namespace Lib;
 
-//TODO: Hide GetCharacterMap, CountCharacters and BuildTree
 //TODO: Test with files
-//TODO: Test Decode with shitty tree
 public static class HuffmanCoding
 {
     /// <summary>
     /// Encodes the given string based on the given tree.
     /// </summary>
     /// <param name="text">The text to be encoded.</param>
-    /// <param name="tree">The tree representing the encoing.</param>
+    /// <param name="tree">The tree representing the encoding.</param>
     /// <returns>The string encoded with 0s and 1s.</returns>
     /// <exception cref="ArgumentException">Is thrown if the text is null or empty.</exception>
-    /// <exception cref="ArgumentNullException">Is thrown if the tree is null.</exception>
+    /// <exception cref="ArgumentNullException">Is thrown if the encoding is null.</exception>
     /// <exception cref="InvalidOperationException">Is thrown if the string
     /// contains characters that are not in the tree</exception>
     public static string Encode(string text, Tree tree)
@@ -40,28 +38,44 @@ public static class HuffmanCoding
     }
     
     /// <summary>
-    /// Recursively traverses the Tree to build a mapping of characters to their binary codes.
+    /// Decodes the binary string based on the given encoding. 
     /// </summary>
-    /// <param name="tree">The current node in the Tree.</param>
-    /// <param name="codings">The dictionary to store the character to code mappings.</param>
-    /// <param name="current">The current binary code as a string.</param>
-    /// <exception cref="ArgumentNullException">Is thrown if the tree or codings are null.</exception>
-    public static void GetCharacterMap(Tree tree, Dictionary<char, string> codings, string current = "")
+    /// <param name="binary">A string containing only the binary encoded text.</param>
+    /// <param name="encoding">The tree representing the encoding</param>
+    /// <returns>The decoded text.</returns>
+    /// <exception cref="ArgumentException">Is thrown if the binary is empty.</exception>
+    /// <exception cref="ArgumentException">Is thrown if the binary contains
+    /// characters other than 0s and 1s.</exception>
+    /// <exception cref="ArgumentNullException">Is thrown if the binary or the encoding is null.</exception>
+    public static string Decode(string binary, Tree encoding)
     {
-        ArgumentNullException.ThrowIfNull(tree);
-        ArgumentNullException.ThrowIfNull(codings);
-        
-        if (tree.Left == null && tree.Right == null && tree.Character != null) {
-            //It is ok convert since it is checked before if char has value
-            codings.Add(Convert.ToChar(tree.Character), current);
-            return;
-        }
+        ArgumentNullException.ThrowIfNull(binary);
+        ArgumentNullException.ThrowIfNull(encoding);
+        ArgumentException.ThrowIfNullOrEmpty(binary);
 
-        if (tree.Left != null) 
-            GetCharacterMap(tree.Left, codings, current + "0");
+        var sb = new StringBuilder();
+        var current = encoding; // start with root
+        foreach (var item in binary)
+        {
+            if (item == '0')
+                current = current.Left;
+            else if(item == '1')
+                current = current.Right;
+            else
+                throw new ArgumentException("The binary string must only contain 0s and 1s");
+
+            if (current == null)
+                throw new InvalidOperationException(
+                    "The binary string contained characters that cannot be handled with the given encoding");
+            
+            if (current.Left == null || current.Right == null)
+            {
+                sb.Append(current.Character);
+                current = encoding; //set back to root & restart searching
+            }
+        }
         
-        if (tree.Right != null) 
-            GetCharacterMap(tree.Right, codings, current + "1");
+        return sb.ToString();
     }
     
     /// <summary>
@@ -115,12 +129,31 @@ public static class HuffmanCoding
     }
     
     /// <summary>
-    /// Counts the frequency of each character in the given string.
+    /// Recursively traverses the Tree to build a mapping of characters to their binary codes.
     /// </summary>
-    /// <param name="text">The text to count characters from.</param>
-    /// <returns>A dictionary mapping each character to its frequency count.</returns>
-    /// <exception cref="ArgumentNullException">Is thrown if the text is null.</exception>
-    public static Dictionary<char, int> CountCharacters(string text)
+    /// <param name="tree">The current node in the Tree.</param>
+    /// <param name="codings">The dictionary to store the character to code mappings.</param>
+    /// <param name="current">The current binary code as a string.</param>
+    /// <exception cref="ArgumentNullException">Is thrown if the tree or codings are null.</exception>
+    private static void GetCharacterMap(Tree tree, Dictionary<char, string> codings, string current = "")
+    {
+        ArgumentNullException.ThrowIfNull(tree);
+        ArgumentNullException.ThrowIfNull(codings);
+        
+        if (tree.Left == null && tree.Right == null && tree.Character != null) {
+            //It is ok convert since it is checked before if char has value
+            codings.Add(Convert.ToChar(tree.Character), current);
+            return;
+        }
+
+        if (tree.Left != null) 
+            GetCharacterMap(tree.Left, codings, current + "0");
+        
+        if (tree.Right != null) 
+            GetCharacterMap(tree.Right, codings, current + "1");
+    }
+    
+    private static Dictionary<char, int> CountCharacters(string text)
     {
         ArgumentNullException.ThrowIfNull(text);
         
@@ -138,35 +171,5 @@ public static class HuffmanCoding
         }
 
         return characterMap;
-    }
-
-    public static string Decode(string binary, Tree encoding)
-    {
-        ArgumentNullException.ThrowIfNull(binary);
-        ArgumentNullException.ThrowIfNull(encoding);
-        ArgumentException.ThrowIfNullOrEmpty(binary);
-
-        var sb = new StringBuilder();
-        var current = encoding; // start with root
-        foreach (var item in binary)
-        {
-            // 0 is Left and 1 is Right
-            if (item == '0')
-            {
-                current = current.Left;
-            }
-            else
-            {
-                current = current.Right;
-            }
-            
-            if (current.Left == null || current.Right == null)
-            {
-                sb.Append(current.Character);
-                current = encoding; //set back to root
-            }
-        }
-        
-        return sb.ToString();
     }
 }

@@ -6,70 +6,6 @@ namespace Test;
 
 public class HuffmanCodingTest
 {
-    [Test]
-    public void CountCharactersReturnsEmptyDictionaryOnEmptyText()
-    {
-        var text = string.Empty;
-        
-        var charMap = HuffmanCoding.CountCharacters(text);
-        
-        Assert.That(charMap, Is.Empty);
-    }
-
-    [Test]
-    public void CountCharactersThrowsArgumentExceptionIfTextIsNull()
-    {
-        Assert.Catch(() => HuffmanCoding.CountCharacters(null!));
-    }
-    
-    [Test]
-    public void CountCharactersReturnsCorrectNumberOfCharactersInText()
-    {
-        var text = "AABACCDDCABBACCCAABB";
-        
-        var charMap = HuffmanCoding.CountCharacters(text);
-
-        Assert.That(charMap['A'], Is.EqualTo(7));
-        Assert.That(charMap['B'], Is.EqualTo(5));
-        Assert.That(charMap['C'], Is.EqualTo(6));
-        Assert.That(charMap['D'], Is.EqualTo(2));
-    }
-    
-    [Test]
-    public void CountCharactersAlsoCountsLowercaseLetters()
-    {
-        var text = "bbbaaddabadddddaabbbaac";
-        
-        var charMap = HuffmanCoding.CountCharacters(text);
-
-        Assert.That(charMap['a'], Is.EqualTo(8));
-        Assert.That(charMap['b'], Is.EqualTo(7));
-        Assert.That(charMap['c'], Is.EqualTo(1));
-        Assert.That(charMap['d'], Is.EqualTo(7));
-    }
-    
-    [Test]
-    public void CountCharactersAlsoCountsSpecialCharacters()
-    {
-        var text = "#AA##$$BACCDDCA$$BBACCCAABB%";
-        
-        var charMap = HuffmanCoding.CountCharacters(text);
-
-        Assert.That(charMap['A'], Is.EqualTo(7));
-        Assert.That(charMap['B'], Is.EqualTo(5));
-        Assert.That(charMap['C'], Is.EqualTo(6));
-        Assert.That(charMap['D'], Is.EqualTo(2));
-        Assert.That(charMap['#'], Is.EqualTo(3));
-        Assert.That(charMap['$'], Is.EqualTo(4));
-        Assert.That(charMap['%'], Is.EqualTo(1));
-    }
-
-    [Test]
-    public void CountCharactersThrowsArgumentNullExceptionWhenTextIsNull()
-    {
-        Assert.Catch<ArgumentNullException>(() => HuffmanCoding.CountCharacters(null!));
-    }
-    
     [TestCase("")]
     [TestCase("A")]
     [TestCase("AA")]
@@ -106,36 +42,6 @@ public class HuffmanCodingTest
         
         Assert.That(result.Right.Right.Right.Character, Is.EqualTo('B'));
         Assert.That(result.Right.Right.Right.Weight, Is.EqualTo(5));
-    }
-    
-    [Test]
-    public void GetCharacterMapThrowsArgumentNullExceptionWhenTreeIsNull()
-    {
-        var codings = new Dictionary<char, string>();
-        Assert.Catch(() => HuffmanCoding.GetCharacterMap(null!, codings));
-    }
-    
-    [Test]
-    public void GetCharacterMapThrowsArgumentNullExceptionWhenCodingsAreNull()
-    {
-        Tree tree = new Tree();
-        Assert.Catch(() => HuffmanCoding.GetCharacterMap(tree, null!));
-    }
-
-    [Test]
-    public void GetCharacterMapReturnsCorrectMap()
-    {
-        string text = "AABACCDDCABBACCCAABB";
-        var tree = HuffmanCoding.BuildTree(text);
-        Dictionary<char, string> encodings = new Dictionary<char, string>();
-
-        HuffmanCoding.GetCharacterMap(tree, encodings);
-        
-        Assert.That(encodings.Count, Is.EqualTo(4));
-        Assert.That(encodings['A'], Is.EqualTo("0"));
-        Assert.That(encodings['C'], Is.EqualTo("10"));
-        Assert.That(encodings['B'], Is.EqualTo("111"));
-        Assert.That(encodings['D'], Is.EqualTo("110"));
     }
     
     [Test]
@@ -201,22 +107,46 @@ public class HuffmanCodingTest
     }
 
     [Test]
-    public void DecodeThrowsArgumentNullExceptionWhenTreeIsNull()
+    public void DecodeThrowsArgumentNullExceptionWhenEncodingIsNull()
     {
         Assert.Catch<ArgumentNullException>(() => HuffmanCoding.Decode("0101", null!));
     }
 
     [Test]
+    public void DecodeThrowsArgumentExceptionWhenStringDoesNotContainValidBinaryCharacters()
+    {
+        Tree tree = new Tree();
+        tree.Left = new Tree { Character = 'A' };
+        tree.Right = new Tree { Character = 'B' };
+
+        string input = "01011A"; 
+        
+        Assert.Catch<ArgumentException>(() => HuffmanCoding.Decode(input, tree));
+    }
+    
+    [Test]
+    public void DecodeThrowsInvalidOperationExceptionWhenStringDoesNotMatchTree()
+    {
+        Tree tree = new Tree();
+        tree.Left = new Tree { Character = 'A' };
+        tree.Left.Right = new Tree { Character = 'B' };
+
+        string input = "01011"; 
+        
+        Assert.Catch<InvalidOperationException>(() => HuffmanCoding.Decode(input, tree));
+    }
+
+    [Test]
     public void DecodeCorrectlyDecodesString()
     {
-        Tree root = new Tree();
-        root.Left = new Tree { Character = 'A' };
-        root.Right = new Tree { Character = 'B' };
+        Tree tree = new Tree();
+        tree.Left = new Tree { Character = 'A' };
+        tree.Right = new Tree { Character = 'B' };
 
         string input = "01011"; 
         string expected = "ABABB";
         
-        string result = HuffmanCoding.Decode(input, root);
+        string result = HuffmanCoding.Decode(input, tree);
         
         Assert.That(expected, Is.EqualTo(result));
     }
