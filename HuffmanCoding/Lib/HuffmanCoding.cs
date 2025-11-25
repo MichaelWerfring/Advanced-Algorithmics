@@ -75,7 +75,7 @@ public static class HuffmanCoding
         var charMap = CountCharacters(text);
 
         // Build Queue
-        var queue = new PriorityQueue<Tree, int>(charMap.Count);
+        var heap = new Heap<Tree>();
         foreach (var pair in charMap)
         {
             var node = new Tree()
@@ -84,19 +84,19 @@ public static class HuffmanCoding
                 Weight = pair.Value
             };
             
-            queue.Enqueue(node, node.Weight);
+            heap.Insert(node);
         }
         
-        if (queue.Count < 2)
+        if (heap.Count < 2)
         {
             throw new ArgumentException("The given text must contain at least 2 distinct characters.");
         }
         
         // Build Tree from Queue
-        while (queue.Count > 1)
+        while (heap.Count > 1)
         {
-            var first = queue.Dequeue();
-            var second = queue.Dequeue();
+            var first = heap.Pop();
+            var second = heap.Pop();
 
             var newNode = new Tree()
             {
@@ -105,10 +105,10 @@ public static class HuffmanCoding
                 Right = second
             };
             
-            queue.Enqueue(newNode, newNode.Weight);
+            heap.Insert(newNode);
         }
 
-        return queue.Dequeue();
+        return heap.Pop();
     }
     
     /// <summary>
