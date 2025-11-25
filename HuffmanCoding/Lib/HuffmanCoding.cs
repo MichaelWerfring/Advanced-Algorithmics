@@ -2,7 +2,6 @@
 
 namespace Lib;
 
-//TODO: Test with files
 public static class HuffmanCoding
 {
     /// <summary>

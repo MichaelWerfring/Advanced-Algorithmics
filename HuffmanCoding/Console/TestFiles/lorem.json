@@ -1,0 +1,266 @@
+{
+  "Weight": 591,
+  "Character": null,
+  "Left": {
+    "Weight": 238,
+    "Character": null,
+    "Left": {
+      "Weight": 112,
+      "Character": null,
+      "Left": {
+        "Weight": 56,
+        "Character": "e",
+        "Left": null,
+        "Right": null
+      },
+      "Right": {
+        "Weight": 56,
+        "Character": null,
+        "Left": {
+          "Weight": 26,
+          "Character": "d",
+          "Left": null,
+          "Right": null
+        },
+        "Right": {
+          "Weight": 30,
+          "Character": "u",
+          "Left": null,
+          "Right": null
+        }
+      }
+    },
+    "Right": {
+      "Weight": 126,
+      "Character": null,
+      "Left": {
+        "Weight": 62,
+        "Character": null,
+        "Left": {
+          "Weight": 30,
+          "Character": "i",
+          "Left": null,
+          "Right": null
+        },
+        "Right": {
+          "Weight": 32,
+          "Character": null,
+          "Left": {
+            "Weight": 16,
+            "Character": null,
+            "Left": {
+              "Weight": 8,
+              "Character": ",",
+              "Left": null,
+              "Right": null
+            },
+            "Right": {
+              "Weight": 8,
+              "Character": null,
+              "Left": {
+                "Weight": 4,
+                "Character": "L",
+                "Left": null,
+                "Right": null
+              },
+              "Right": {
+                "Weight": 4,
+                "Character": "y",
+                "Left": null,
+                "Right": null
+              }
+            }
+          },
+          "Right": {
+            "Weight": 16,
+            "Character": null,
+            "Left": {
+              "Weight": 8,
+              "Character": "g",
+              "Left": null,
+              "Right": null
+            },
+            "Right": {
+              "Weight": 8,
+              "Character": null,
+              "Left": {
+                "Weight": 4,
+                "Character": "k",
+                "Left": null,
+                "Right": null
+              },
+              "Right": {
+                "Weight": 4,
+                "Character": null,
+                "Left": {
+                  "Weight": 2,
+                  "Character": "q",
+                  "Left": null,
+                  "Right": null
+                },
+                "Right": {
+                  "Weight": 2,
+                  "Character": "A",
+                  "Left": null,
+                  "Right": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "Right": {
+        "Weight": 64,
+        "Character": null,
+        "Left": {
+          "Weight": 32,
+          "Character": "m",
+          "Left": null,
+          "Right": null
+        },
+        "Right": {
+          "Weight": 32,
+          "Character": "r",
+          "Left": null,
+          "Right": null
+        }
+      }
+    }
+  },
+  "Right": {
+    "Weight": 353,
+    "Character": null,
+    "Left": {
+      "Weight": 160,
+      "Character": null,
+      "Left": {
+        "Weight": 74,
+        "Character": null,
+        "Left": {
+          "Weight": 36,
+          "Character": "s",
+          "Left": null,
+          "Right": null
+        },
+        "Right": {
+          "Weight": 38,
+          "Character": null,
+          "Left": {
+            "Weight": 18,
+            "Character": "l",
+            "Left": null,
+            "Right": null
+          },
+          "Right": {
+            "Weight": 20,
+            "Character": "n",
+            "Left": null,
+            "Right": null
+          }
+        }
+      },
+      "Right": {
+        "Weight": 86,
+        "Character": null,
+        "Left": {
+          "Weight": 42,
+          "Character": "o",
+          "Left": null,
+          "Right": null
+        },
+        "Right": {
+          "Weight": 44,
+          "Character": null,
+          "Left": {
+            "Weight": 20,
+            "Character": null,
+            "Left": {
+              "Weight": 10,
+              "Character": "p",
+              "Left": null,
+              "Right": null
+            },
+            "Right": {
+              "Weight": 10,
+              "Character": null,
+              "Left": {
+                "Weight": 4,
+                "Character": null,
+                "Left": {
+                  "Weight": 2,
+                  "Character": "j",
+                  "Left": null,
+                  "Right": null
+                },
+                "Right": {
+                  "Weight": 2,
+                  "Character": "S",
+                  "Left": null,
+                  "Right": null
+                }
+              },
+              "Right": {
+                "Weight": 6,
+                "Character": "b",
+                "Left": null,
+                "Right": null
+              }
+            }
+          },
+          "Right": {
+            "Weight": 24,
+            "Character": null,
+            "Left": {
+              "Weight": 12,
+              "Character": "c",
+              "Left": null,
+              "Right": null
+            },
+            "Right": {
+              "Weight": 12,
+              "Character": null,
+              "Left": {
+                "Weight": 6,
+                "Character": "v",
+                "Left": null,
+                "Right": null
+              },
+              "Right": {
+                "Weight": 6,
+                "Character": ".",
+                "Left": null,
+                "Right": null
+              }
+            }
+          }
+        }
+      }
+    },
+    "Right": {
+      "Weight": 193,
+      "Character": null,
+      "Left": {
+        "Weight": 94,
+        "Character": null,
+        "Left": {
+          "Weight": 44,
+          "Character": "a",
+          "Left": null,
+          "Right": null
+        },
+        "Right": {
+          "Weight": 50,
+          "Character": "t",
+          "Left": null,
+          "Right": null
+        }
+      },
+      "Right": {
+        "Weight": 99,
+        "Character": " ",
+        "Left": null,
+        "Right": null
+      }
+    }
+  }
+}

@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "Console\Console.csproj", "{A4A5ED53-E023-435F-8BB7-30C09810921B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib", "Lib\Lib.csproj", "{06414558-24FF-4003-A12E-789625F239A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{12DF269F-CECE-4A29-AF18-17E54E1AF574}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "Console\Console.csproj", "{20EC6645-A51C-4BA1-9BAA-E40744E405A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +24,9 @@ Global
 		{12DF269F-CECE-4A29-AF18-17E54E1AF574}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12DF269F-CECE-4A29-AF18-17E54E1AF574}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12DF269F-CECE-4A29-AF18-17E54E1AF574}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20EC6645-A51C-4BA1-9BAA-E40744E405A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20EC6645-A51C-4BA1-9BAA-E40744E405A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20EC6645-A51C-4BA1-9BAA-E40744E405A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20EC6645-A51C-4BA1-9BAA-E40744E405A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
