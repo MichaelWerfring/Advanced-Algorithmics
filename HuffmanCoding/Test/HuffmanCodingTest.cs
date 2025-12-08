@@ -89,7 +89,14 @@ public class HuffmanCodingTest
         
         Assert.Throws<InvalidOperationException>(() => HuffmanCoding.Encode(text, tree));
     }
-
+    
+    [Test]
+    public void EncodeThrowsWhenTextContainsNewCharactersNotSeenInBuildTree()
+    {
+        var tree = HuffmanCoding.BuildTree("ABC");
+        Assert.Throws<InvalidOperationException>(() => HuffmanCoding.Encode("ABD", tree));
+    }
+    
     [Test]
     public void DecodeThrowsArgumentExceptionWhenStringIsEmpty()
     {
