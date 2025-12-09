@@ -1,4 +1,6 @@
-﻿namespace GraphLibrary;
+﻿using GraphLibrary;
+
+namespace Test;
 
 public class GridToGraphConverterTest
 {

@@ -1,4 +1,6 @@
-﻿namespace GraphLibrary;
+﻿using GraphLibrary;
+
+namespace Test;
 
 public class GridNodeTest
 {
@@ -31,5 +33,19 @@ public class GridNodeTest
         var node1 = new GridNode(1, 1);
         var node2 = new GridNode(1, 2);
         Assert.That(node1.Equals(node2), Is.False);
+    }
+
+    [Test]
+    public void EqualsReturnsFalseIfComparedToNull()
+    {
+        var node1 = new GridNode(1, 1);
+        Assert.That(node1.Equals(null!), Is.False);
+    }
+
+    [Test]
+    public void EqualsReturnsTrueIfTheSameObjectIsCompared()
+    {
+        var node1 = new GridNode(1, 1);
+        Assert.That(node1.Equals(node1), Is.True);
     }
 }
