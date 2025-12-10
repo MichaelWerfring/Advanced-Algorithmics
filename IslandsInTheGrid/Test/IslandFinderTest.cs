@@ -1,9 +1,17 @@
-﻿using GraphLibrary;
+﻿using Lib;
 
 namespace Test;
 
 public class IslandFinderTest
 {
+    [Test]
+    public void FindIslandThrowsArgumentNullExceptionIfGraphIsNull()
+    {
+        var islandFinder = new IslandFinder<GridNode>();
+
+        Assert.Catch<ArgumentNullException>(() => islandFinder.FindIslands(null!));
+    }
+    
     [Test]
     public void FindIslandsOnEmptyGraphReturnsEmptyList()
     {

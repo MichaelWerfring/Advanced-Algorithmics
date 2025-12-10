@@ -1,4 +1,4 @@
-﻿namespace GraphLibrary;
+﻿namespace Lib;
 
 public class GridNode(int x, int y) : IEquatable<GridNode>
 {

@@ -1,7 +1,8 @@
-﻿namespace GraphLibrary;
+﻿namespace Lib;
 
 public class IslandFinder<T>
 {
+    // 0 node at index was not visited 
     private int[]? _visited;
 
     // we count components starting from 1
@@ -10,14 +11,20 @@ public class IslandFinder<T>
     // use a stack and not iteration to avoid stack overflow
     private readonly List<T> _stack = [];
     
+    // is not needed for the assignment but was easy to do
+    private readonly Dictionary<int, List<T>> _components = [];
+    
     public List<int> FindIslands(Graph<T> graph)
     {
+        if (graph == null) 
+            throw new ArgumentNullException(nameof(graph));
+        
+        
         var result = new List<int>();
+        _components.Clear();
       
         if (graph.NodeCount == 0)
-        {
             return []; // no components in an empty graph
-        }
 
         _visited = new int[graph.NodeCount];
         // make sure to reset the visited array - we use number 0 as "not visited"
@@ -30,9 +37,10 @@ public class IslandFinder<T>
             {
                 // start a new component
                 _currentComponent++;
+                _components.Add(_currentComponent, []);
                 _stack.Add(graph.Nodes.ElementAt(i));
                 
-                // Track size for each Island
+                // Remember size for each Island
                 int size = DepthFirstSearch(graph);
                 result.Add(size);
             }
@@ -51,27 +59,25 @@ public class IslandFinder<T>
             T node = _stack.Last();
             
             int nodeIndex = graph.Nodes.ToList().IndexOf(node);
-            if (_visited![nodeIndex] != 0)
+            if (_visited![nodeIndex] != 0) // _visited cannot be null since it is never called before initialisation 
             {
-                _stack.RemoveAt(_stack.Count - 1); // backtrack
+                _stack.RemoveAt(_stack.Count - 1); // backtrack, node was already visited
                 continue;
             }
 
             _visited[nodeIndex] = _currentComponent;
+            _components[_currentComponent]?.Add(node); // no need to check is always set before calling search
 
             currentSize++;
             
-            foreach (var neighbor in graph.GetNeighbours(graph.Nodes.ElementAt(nodeIndex)))
+            foreach (var neighbor in graph.GetNeighbours(node))
             {
                 int neighborIndex = graph.Nodes.ToList().IndexOf(neighbor);
                 if (_visited[neighborIndex] == 0)
-                {
                     _stack.Add(neighbor);
-                }
             }
         }
 
-        // Return size of Island
         return currentSize;
     }
 }

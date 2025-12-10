@@ -1,14 +1,22 @@
-﻿using System.Collections;
+﻿namespace Lib;
 
-namespace GraphLibrary;
-
-public class GridToGraphConverter
+public static class GridToGraphConverter
 {
-    public static Graph<GridNode> Convert(char[,] grid, Predicate<char> isValidNode)
+    
+    /// <summary>
+    /// Converts the given grid to a graph where all the neighboring grid cells are neighbors in the graph.
+    /// </summary>
+    /// <param name="grid">The grid to be converted.</param>
+    /// <param name="isValidNode">A predicated to decide whether a cell should be taken into the graph.</param>
+    /// <returns>A graph representing the given grid only with applicable nodes.</returns>
+    /// <exception cref="ArgumentNullException">If either the grid or the predicate is null.</exception>
+    public static Graph<GridNode> Convert<T>(T[,] grid, Predicate<T> isValidNode)
     {
-        ArgumentNullException.ThrowIfNull(grid);
-        ArgumentNullException.ThrowIfNull(isValidNode);
+        if (grid == null) 
+            throw new ArgumentNullException(nameof(grid));
 
+        if (isValidNode == null) 
+            throw new ArgumentNullException(nameof(isValidNode));
 
         var graph = new Graph<GridNode>();
         
@@ -19,10 +27,10 @@ public class GridToGraphConverter
                 if (!isValidNode(grid[i, j]))
                     continue;
 
-                var neighbors = GetLandNeighbors(grid, i, j, isValidNode);
+                var neighbors = GetValidNeighbors(grid, i, j, isValidNode);
                 
-                if (neighbors.Count == 0)
-                    graph.AddUndirectedEdge(new GridNode(i, j), new GridNode(i, j));
+                if (neighbors.Count == 0) // Self edges are not allowed but node is still created
+                    graph.AddUndirectedEdge(new GridNode(i, j), new GridNode(i, j)); 
                 
                 foreach (var neighbor in neighbors)
                 { 
@@ -34,7 +42,7 @@ public class GridToGraphConverter
         return graph;
     }
 
-    private static List<GridNode> GetLandNeighbors(char[,] grid, int i, int j, Predicate<char> isValidNode)
+    private static List<GridNode> GetValidNeighbors<T>(T[,] grid, int i, int j, Predicate<T> isValidNode)
     {
         var neighbors = new List<GridNode>();
 

@@ -1,4 +1,4 @@
-﻿using GraphLibrary;
+﻿using Lib;
 
 namespace Test;
 
@@ -26,7 +26,7 @@ public class GridNodeTest
         var node2 = new GridNode(1, 1);
         Assert.That(node1.Equals(node2), Is.True);
     }
-
+    
     [Test]
     public void EqualsReturnsFalseForDifferentXAndYValues()
     {
